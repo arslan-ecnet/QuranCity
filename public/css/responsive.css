@@ -1,0 +1,70 @@
+/* #Media Queries
+================================================== */
+/* END__ */
+
+@media (min-width: 992px) and (max-width: 1199px) {
+.login-header .login-btn{ font-size:16px; padding:8px 16px;}
+.login-header .logo .icon img{ height:50px; width:auto}
+.login-main{ padding-top:200px; padding-bottom:50px;}
+.sidebar{ left:-273px; -moz-transition:all 0.5s ease;  -webkit-transition:all 0.5s ease;  -o-transition:all 0.5s ease;  transition:all 0.5s ease;}
+.sidebar.active{ left:0;}
+.dash-body{ margin-left:0; padding-top:97px;}
+.dash-body .dash-content{ padding:30px 0;}
+.content-wrap, .bottom-content{ padding-left:16px; padding-right:16px;}
+.sidebar-logo{ padding:0 16px; height:70px;}
+.sidebar-logo.justify-content-center{justify-content: flex-start!important;}
+.logo-title{ display:none !important;}
+} 
+/* END__ */
+
+@media (min-width: 768px) and (max-width: 991px) {
+.login-header .login-btn{ font-size:16px; padding:8px 16px;}
+.login-header .logo .icon img{ height:50px; width:auto}
+.login-main{ padding-top:200px; padding-bottom:50px;}
+.sidebar{ left:-273px; -moz-transition:all 0.5s ease;  -webkit-transition:all 0.5s ease;  -o-transition:all 0.5s ease;  transition:all 0.5s ease;}
+.sidebar.active{ left:0;}
+.dash-body{ margin-left:0; padding-top:97px;}
+.dash-body .dash-content{ padding:30px 0;}
+.content-wrap{ padding-left:16px; padding-right:16px;}
+.top-content [class*=col-] + [class*=col-]{ margin-top:24px;}
+.bottom-content{overflow:hidden; white-space:nowrap; overflow-x:auto; overflow-y:hidden; text-align:center; -webkit-overflow-scrolling:touch; -ms-overflow-style:none; display:block; max-width:inherit; margin-top:24px;}
+.bottom-content .box-content { min-width:320px;}
+.bottom-content .box-content{ margin-left:16px;}
+.bottom-content .box-content:last-child { min-width:200px;}
+.sidebar-logo{ padding:0 16px; height:70px;}
+.sidebar-logo.justify-content-center{justify-content: flex-start!important;}
+.logo-title{ display:none !important;}	
+} 
+/* END__ */
+
+@media only screen and (max-width: 767px) {
+.login-header img{ height:80px; width:auto}
+.login-main{ padding:40px 0;}
+.sidebar{ left:-273px; -moz-transition:all 0.5s ease;  -webkit-transition:all 0.5s ease;  -o-transition:all 0.5s ease;  transition:all 0.5s ease;}
+.sidebar.active{ left:0;}
+.dash-body{ margin-left:0; padding-top:97px;}
+.dash-body .dash-content{ padding:30px 0;}
+.content-wrap{ padding-left:16px; padding-right:16px;}
+.top-content [class*=col-] + [class*=col-]{ margin-top:24px;}
+.bottom-content{overflow:hidden; white-space:nowrap; overflow-x:auto; overflow-y:hidden; text-align:center; -webkit-overflow-scrolling:touch; -ms-overflow-style:none; display:block; max-width:inherit; margin-top:24px;}
+.bottom-content .box-content { min-width:320px;}
+.bottom-content .box-content{ margin-left:16px;}
+.bottom-content .box-content:last-child { min-width:200px;}
+.sidebar-logo{ padding:0 16px; height:70px;}
+.sidebar-logo.justify-content-center{justify-content: flex-start!important;}
+.logo-title{ display:none !important;}
+} 
+/* END__ */
+
+@media only screen and (max-width: 480px) {
+.login-content .content h2{ font-size:30px;}
+.login-content .content h3{ font-size:20px;}
+.login-content .content h3 span, .login-content .content h5{ font-size:16px;}
+.box-content .tr h5{ font-size:16px;}
+.box-content .tr h4{ font-size:22px;}
+.box-content .tr .graphic{ width:60px;}
+.box-content .tr{ background-size:44px;}
+.footer{ text-align:center; font-size:13px;}
+} 
+/* END__ */
+
