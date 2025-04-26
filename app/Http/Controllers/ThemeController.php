@@ -20,15 +20,14 @@ class ThemeController extends Controller
     {
         $request->validate([
            'name' => 'string|required',
-           'description' => 'string|required',
            'theme_color' => 'string|required',
-           'sort_order' => 'string|required',
         ]);
         $newTheme = new Theme();
         $newTheme->name = $request->name;
-        $newTheme->description = $request->description;
         $newTheme->theme_color = $request->theme_color;
-        $newTheme->sort_order = $request->sort_order;
+        if ($request->hasFile('theme_image')) {
+            $newTheme->theme_image = $this->uploadImage($request->file('theme_image'));
+        }
         $newTheme->save();
         return redirect(route('themeList'));
     }
@@ -41,15 +40,14 @@ class ThemeController extends Controller
     {
         $request->validate([
             'name' => 'string|required',
-            'description' => 'string|required',
             'theme_color' => 'string|required',
-            'sort_order' => 'string|required',
         ]);
         $updateTheme = Theme::find($id);
         $updateTheme->name = $request->name;
-        $updateTheme->description = $request->description;
         $updateTheme->theme_color = $request->theme_color;
-        $updateTheme->sort_order = $request->sort_order;
+        if ($request->hasFile('theme_image')) {
+            $updateTheme->theme_image = $this->uploadImage($request->file('theme_image'));
+        }
         $updateTheme->save();
         return redirect(route('themeList'));
     }
@@ -58,5 +56,13 @@ class ThemeController extends Controller
         $deteleTheme = Theme::find($id);
         $deteleTheme->delete();
         return redirect(route('themeList'));
+    }
+    private function uploadImage($image)
+    {
+        if ($image) {
+            $path = $image->store('theme_image', 'public');
+            return 'theme_image/' . basename($path);
+        }
+        return null;
     }
 }

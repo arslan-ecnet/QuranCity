@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title>Quran City</title>
+    <title>Create Surah</title>
 @endsection
 @section('content')
     <style>
@@ -31,10 +31,10 @@
     </style>
     <div class="dash-content">
 
-{{--        <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
-{{--            <span>Show:</span>--}}
-{{--            <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
-{{--        </div>--}}
+        {{--        <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
+        {{--            <span>Show:</span>--}}
+        {{--            <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
+        {{--        </div>--}}
         <div class="mb-3">
             @if(session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
@@ -50,43 +50,49 @@
                 </div>
             @endif
         </div>
-        <form action="{{route('suraCreate')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('surahCreate')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
                     <div class="col-lg-6">
-                        <label>Name</label>
-                        <input type="text" class="form-control" name="name_en">
+                        <label>Surah Name</label>
+                        <input type="text" class="form-control" name="name">
                     </div>
                     <div class="col-lg-6">
-                        <label>Name Arabic</label>
-                        <input type="text" class="form-control" name="name_ar">
+                        <label>Surah Icon</label>
+                        <input type="file" class="form-control" name="surah_icon">
+                    </div>
+                </div>
+                <div class="row top-content mt-4">
+                    <div class="col-lg-6">
+                        <label>Surah Number</label>
+                        <input type="number" class="form-control" name="surah_number">
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Total Verses</label>
+                        <input type="number" class="form-control" name="total_verses">
                     </div>
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
                         <label>Classification</label>
-                        <input type="text" class="form-control" name="classification">
+                        <select class="form-control" id="classification" name="classification">
+                            <option value="">-- Select Classification --</option>
+                            <option value="meccan">Meccan</option>
+                            <option value="medinan">Medinan</option>
+                        </select>
                     </div>
                     <div class="col-lg-6">
                         <label>Sub Classification</label>
-                        <input type="text" class="form-control" name="sub_classification">
-                    </div>
-                </div>
-                <div class="row top-content mt-4">
-                    <div class="col-lg-6">
-                        <label>Translation</label>
-                        <input type="text" class="form-control" name="translation">
-                    </div>
-                    <div class="col-lg-6">
-                        <label>Verses Count</label>
-                        <input type="text" class="form-control" name="verses_count">
+                        <select class="form-control" id="sub_classification" name="sub_classification">
+                            <option value="">-- Select Sub Classification --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
                         <label>Description</label>
-                        <input type="text" class="form-control" name="description">
+                        <textarea class="form-control" name="description"></textarea>
                     </div>
                     <div class="col-lg-6">
                         <label>Summary</label>
@@ -95,38 +101,53 @@
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
-                        <label>Revelation Order</label>
-                        <input type="text" class="form-control" name="revelation_order">
+                        <label>Did You Know</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3"
+                                                                     onclick="addDidYouKnow()">+ Add</a>
+                        <div id="did-you-know-group">
+                            <div class="row mb-2 did-you-know-item">
+                                <div class="col">
+                                    <input class="form-control" name="did_you_know[]">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-6">
-                        <label for="theme_color" class="form-label">Choose Sura Color</label>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="color-input-wrapper">
-                                <input type="color" id="theme_color" name="sura_color" onchange="updateColorCode(this)">
+                        <label>Focus</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3" onclick="addFocus()">+ Add</a>
+                        <div id="focus-group">
+                            <div class="row mb-2 focus-item">
+                                <div class="col">
+                                    <input class="form-control" name="focus[]">
+                                </div>
                             </div>
-                            <span id="colorCode" style="font-family: monospace;">#000000</span>
                         </div>
-
-                        <script>
-                            function updateColorCode(input) {
-                                document.getElementById('colorCode').textContent = input.value.toUpperCase();
-                            }
-                        </script>
-
                     </div>
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
-                        <label>Sura Icon</label>
-                        <input type="file" class="form-control" name="sura_icon">
+                        <label>Benefits Of Recitation</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3"
+                                                                               onclick="addBenefit()">+ Add</a>
+                        <div id="benefit-group">
+                            <div class="row mb-2 benefit-item">
+                                <div class="col">
+                                    <input class="form-control" name="benefits_of_recitation[]">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-6">
-                        <label>Theme</label>
-                        <select class="form-control" name="theme_id">
-                            <option value="0">Please Select Theme...!</option>
-                            @foreach($themes as $theme) @endforeach
-                            <option value="{{$theme->id}}">{{$theme->name}}</option>
-                        </select>
+                    <div class="col-lg-12 mt-4">
+                        <label>Selected Ayat</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3" onclick="addAyat()">+
+                            Add Ayat</a>
+                        <div id="ayat-group">
+                            <div class="row mb-2 ayat-item">
+                                <div class="col">
+                                    <input type="text" name="ayat_title[]" class="form-control"
+                                           placeholder="Ayat (e.g. 1 or 2-4)">
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="ayat_summary[]" class="form-control" placeholder="Summary">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <button class="btn btn-success mt-3" type="submit">Submit</button>
@@ -134,4 +155,81 @@
         </form>
 
     </div>
+@endsection
+@section("scripts")
+    <script>
+        document.getElementById("classification").addEventListener("change", function () {
+            const subClassification = document.getElementById("sub_classification");
+            const value = this.value;
+
+            // Clear previous options
+            subClassification.innerHTML = '<option value="">-- Select Sub Classification --</option>';
+
+            if (value === "meccan") {
+                ["Early Makki", "Middle Makki", "Late Makki"].forEach(function (item) {
+                    let option = document.createElement("option");
+                    option.value = item.toLowerCase();
+                    option.textContent = item;
+                    subClassification.appendChild(option);
+                });
+            } else if (value === "medinan") {
+                let option = document.createElement("option");
+                option.value = "madani";
+                option.textContent = "Madani";
+                subClassification.appendChild(option);
+            }
+        });
+    </script>
+    <script>
+        function addAyat() {
+            const group = document.getElementById('ayat-group');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'mb-2', 'ayat-item');
+            newRow.innerHTML = `
+                                <div class="col">
+                                    <input type="text" name="ayat_title[]" class="form-control" placeholder="Ayat (e.g. 1 or 2-4)">
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="ayat_summary[]" class="form-control" placeholder="Summary">
+                                </div>
+                            `;
+            group.appendChild(newRow);
+        }
+
+        function addDidYouKnow() {
+            const group = document.getElementById('did-you-know-group');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'mb-2', 'did-you-know-item');
+            newRow.innerHTML = `
+                                <div class="col">
+                                    <input type="text" name="did_you_know[]" class="form-control">
+                                </div>
+                            `;
+            group.appendChild(newRow);
+        }
+
+        function addFocus() {
+            const group = document.getElementById('focus-group');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'mb-2', 'focus-item');
+            newRow.innerHTML = `
+                                <div class="col">
+                                    <input type="text" name="focus[]" class="form-control">
+                                </div>
+                            `;
+            group.appendChild(newRow);
+        }
+
+        function addBenefit() {
+            const group = document.getElementById('benefit-group');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'mb-2', 'benefit-item');
+            newRow.innerHTML = `
+                                <div class="col">
+                                    <input type="text" name="benefits_of_recitation[]" class="form-control">
+                                </div>
+                            `;
+            group.appendChild(newRow);
+        }
+    </script>
 @endsection

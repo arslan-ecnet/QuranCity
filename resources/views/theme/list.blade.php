@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title>Quran City</title>
+    <title>Themes</title>
 @endsection
 @section('content')
     <div class="dash-content">
@@ -14,8 +14,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Theme Color</th>
-                    <th>Sort Order</th>
-                    <th>Description</th>
+                    <th>Theme Image</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -26,8 +25,14 @@
                         <td>{{$theme->name}}</td>
                         <td>    <div style="width: 30px; height: 30px; border-radius: 6px; background-color: {{ $theme->theme_color }}; border: 1px solid #ccc;"></div>
                         </td>
-                        <td>{{$theme->sort_order}}</td>
-                        <td>{{$theme->description}}</td>
+                        <td>
+                            @if($theme->theme_image)
+                                <img src="{{ asset('storage/' . $theme->theme_image) }}" alt="Theme Image" style="height: 50px; width: auto;">
+                            @else
+                                N/A
+                            @endif
+                        </td>
+
                         <td>
                             <a href="{{route('editTheme' , ['id' => $theme->id])}}" class="btn btn-info text-white"
                                style="background-color: #CAAE78;border-color: #CAAE78">Edit</a>

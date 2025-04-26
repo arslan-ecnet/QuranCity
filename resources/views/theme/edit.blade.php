@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title>Quran City</title>
+    <title>Edit Theme</title>
 @endsection
 @section('content')
     <style>
@@ -45,7 +45,7 @@
                 </div>
             @endif
         </div>
-        <form action="{{route('updateTheme' , ['id' => $theme->id])}}" method="POST">
+        <form action="{{route('updateTheme' , ['id' => $theme->id])}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
@@ -54,8 +54,9 @@
                         <input type="text" class="form-control" name="name" value="{{$theme->name}}">
                     </div>
                     <div class="col-lg-6">
-                        <label>Description</label>
-                        <input type="text" class="form-control" name="description" value="{{$theme->description}}">
+                        <label>Theme Image</label>
+                        <input type="file" class="form-control" name="theme_image">
+                        <img src="{{ asset('storage/' . $theme->theme_image) }}" alt="Theme Image" style="height: 50px; width: auto;">
                     </div>
                 </div>
                 <div class="row top-content mt-4">
@@ -74,10 +75,6 @@
                             }
                         </script>
 
-                    </div>
-                    <div class="col-lg-6">
-                        <label>Sort Order</label>
-                        <input type="number" class="form-control" value="{{$theme->sort_order}}" name="sort_order">
                     </div>
                 </div>
                 <button class="btn btn-success mt-3" type="submit">Submit</button>

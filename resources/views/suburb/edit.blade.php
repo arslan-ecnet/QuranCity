@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title>Create Theme</title>
+    <title>Edit Suburb</title>
 @endsection
 @section('content')
     <style>
@@ -31,10 +31,10 @@
     </style>
     <div class="dash-content">
 
-{{--        <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
-{{--            <span>Show:</span>--}}
-{{--            <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
-{{--        </div>--}}
+        {{--        <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
+        {{--            <span>Show:</span>--}}
+        {{--            <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
+        {{--        </div>--}}
         <div class="mb-3">
             @if(session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
@@ -50,35 +50,17 @@
                 </div>
             @endif
         </div>
-        <form action="{{route('createTheme')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('suburbUpdate' , ['id' => $suburb->id])}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
                     <div class="col-lg-6">
                         <label>Name</label>
-                        <input type="text" class="form-control" name="name">
+                        <input type="text" class="form-control" name="name" value="{{$suburb->name}}">
                     </div>
                     <div class="col-lg-6">
-                        <label>Theme Image</label>
-                        <input type="file" class="form-control" name="theme_image">
-                    </div>
-                </div>
-                <div class="row top-content mt-4">
-                    <div class="col-lg-6">
-                        <label for="theme_color" class="form-label">Choose Theme Color</label>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="color-input-wrapper">
-                                <input type="color" id="theme_color" name="theme_color" onchange="updateColorCode(this)">
-                            </div>
-                            <span id="colorCode" style="font-family: monospace;">#000000</span>
-                        </div>
-
-                        <script>
-                            function updateColorCode(input) {
-                                document.getElementById('colorCode').textContent = input.value.toUpperCase();
-                            }
-                        </script>
-
+                        <label>Description</label>
+                        <input type="text" class="form-control" name="description" value="{{$suburb->description}}">
                     </div>
                 </div>
                 <button class="btn btn-success mt-3" type="submit">Submit</button>

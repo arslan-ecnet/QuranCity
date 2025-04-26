@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title>Create Theme</title>
+    <title>Edit Resource</title>
 @endsection
 @section('content')
     <style>
@@ -31,10 +31,10 @@
     </style>
     <div class="dash-content">
 
-{{--        <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
-{{--            <span>Show:</span>--}}
-{{--            <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
-{{--        </div>--}}
+        {{--        <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
+        {{--            <span>Show:</span>--}}
+        {{--            <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
+        {{--        </div>--}}
         <div class="mb-3">
             @if(session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
@@ -50,35 +50,34 @@
                 </div>
             @endif
         </div>
-        <form action="{{route('createTheme')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('resourceUpdate' , ['id' => $resource->id])}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
                     <div class="col-lg-6">
-                        <label>Name</label>
-                        <input type="text" class="form-control" name="name">
+                        <label>Title</label>
+                        <input type="text" class="form-control" name="title" value="{{$resource->title}}">
                     </div>
                     <div class="col-lg-6">
-                        <label>Theme Image</label>
-                        <input type="file" class="form-control" name="theme_image">
+                        <label>Type</label>
+                        <input type="text" class="form-control" name="type" value="{{$resource->type}}">
                     </div>
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
-                        <label for="theme_color" class="form-label">Choose Theme Color</label>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="color-input-wrapper">
-                                <input type="color" id="theme_color" name="theme_color" onchange="updateColorCode(this)">
-                            </div>
-                            <span id="colorCode" style="font-family: monospace;">#000000</span>
-                        </div>
-
-                        <script>
-                            function updateColorCode(input) {
-                                document.getElementById('colorCode').textContent = input.value.toUpperCase();
-                            }
-                        </script>
-
+                        <label>Url</label>
+                        <input type="url" class="form-control" name="url" value="{{$resource->url}}">
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Sura</label>
+                        <select class="form-control" name="sura_id">
+                            <option value="">Please Select Sura...!</option>
+                            @foreach($suras as $sura)
+                                <option value="{{ $sura->id }}" {{ isset($resource) && $resource->sura_id == $sura->id ? 'selected' : '' }}>
+                                    {{ $sura->name_en }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <button class="btn btn-success mt-3" type="submit">Submit</button>

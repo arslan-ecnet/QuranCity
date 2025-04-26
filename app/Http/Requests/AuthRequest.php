@@ -17,7 +17,7 @@ class AuthRequest extends FormRequest
         return[
             'name' => ['max:255'],
             'email' => 'max:255',
-            'password' => 'required|string',
+            'token' => 'required|string',
             'sso' => 'required|string'
         ];
     }

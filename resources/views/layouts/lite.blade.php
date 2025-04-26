@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield("title")
-    <link rel="icon" href="{{asset('dist/img/logo.png')}}" type="image/x-icon">
+    <link rel="icon" href="{{asset('dist/img/icon.jpg')}}" type="image/x-icon">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Index</title>

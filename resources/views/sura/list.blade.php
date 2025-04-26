@@ -1,29 +1,65 @@
 @extends('layouts.app')
 @section('title')
-    <title>Quran City</title>
+    <title>Suras</title>
 @endsection
 @section('content')
+    <style>
+        .scroll-cell {
+            max-width: 300px;
+            max-height: 300px;
+            overflow: auto;
+            white-space: pre-wrap;
+            padding: 5px;
+            border: 1px solid #eee;
+            background-color: #f9f9f9;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .dash-content {
+            min-height: calc(100vh - 100px);
+        }
+
+        .content-table {
+            height: 100%; /* Fill the available space */
+            overflow: hidden; /* Hide overflow content from the card */
+        }
+
+        /* Set the max-height of the table's container and enable scrolling */
+        .table-responsive {
+            max-height: 100vh; /* Adjust the max height to control the scrolling area */
+            overflow-y: auto; /* Ensure vertical scrolling */
+        }
+
+        /* Sticky table header */
+        #dataTable thead {
+            position: sticky;
+            top: 0;
+            background-color: #fff; /* Optional: Adjust background color for readability */
+            z-index: 10; /* Ensure header stays on top of other content */
+        }
+    </style>
     <div class="dash-content">
         <div class="content-table">
-            <div class="mb-4"><h5>Sura</h5></div>
-            <a href="{{route('suraCreate')}}" class="btn btn-info text-white mb-3"
+            <div class="mb-4"><h5>Suras</h5></div>
+            <a href="{{route('surahCreate')}}" class="btn btn-info text-white mb-3"
                style="background-color: #CAAE78;border-color: #CAAE78">Create</a>
-            <div class="table-responsive" style="max-height: 500px; overflow-x: auto;">
+            <div class="table-responsive">
                 <table class="table table-striped table-hover align-middle" id="dataTable" style="min-width: 1000px;">
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Name Arabic</th>
-                        <th>Translation</th>
+                        <th>Surah Number</th>
+                        <th>Total Verse</th>
                         <th>Classification</th>
                         <th>Sub Classification</th>
-                        <th>Verses Count</th>
                         <th>Description</th>
                         <th>Summary</th>
-                        <th>Theme</th>
-                        <th>Revelation Order</th>
-                        <th>Sura Color</th>
+                        <th>Focus</th>
+                        <th>Did You Know</th>
+                        <th>Benefits of Recitation</th>
+                        <th>Selected Ayat</th>
                         <th>Sura Icon</th>
                         <th>Action</th>
                     </tr>
@@ -32,29 +68,50 @@
                     @foreach($suras as $sura)
                         <tr>
                             <td>{{$sura->id}}</td>
-                            <td>{{$sura->name_en}}</td>
-                            <td>{{$sura->name_ar}}</td>
-                            <td>{{$sura->translation}}</td>
+                            <td>{{$sura->name}}</td>
+                            <td>{{$sura->surah_number}}</td>
+                            <td>{{$sura->total_verses}}</td>
                             <td>{{$sura->classification}}</td>
                             <td>{{$sura->sub_classification}}</td>
-                            <td>{{$sura->verses_count}}</td>
-                            <td>{{$sura->description}}</td>
+                            <td>{{ Str::limit($sura->description, 100) }}</td>
                             <td>{{$sura->summary}}</td>
-                            <td>{{$sura->theme->name}}</td>
-                            <td>{{$sura->revelation_order}}</td>
-                            <td>    <div style="width: 30px; height: 30px; border-radius: 6px; background-color: {{ $sura->sura_color }}; border: 1px solid #ccc;"></div>
+                            <td>
+                                @foreach (json_decode($sura->focus ?? '[]') as $item)
+                                    {{ $item }}<br>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach (json_decode($sura->did_you_know ?? '[]') as $item)
+                                    {{ $item }}<br>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach (json_decode($sura->benefits_of_recitation ?? '[]') as $item)
+                                    {{ $item }}<br>
+                                @endforeach
+                            </td>
+                            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                @foreach (json_decode($sura->selected_ayat ?? '[]') as $item)
+                                    @if (is_object($item))
+                                        Ayat: {{ $item->ayat ?? '' }} <br>
+                                        Summary: {{ $item->summary ?? '' }} <br><br>
+                                    @else
+                                        {{ $item }} <br><br>
+                                    @endif
+                                @endforeach
+                            </td>
 
                             <td>
-                                @if($sura->sura_icon)
-                                    <img src="{{ asset('storage/' . $sura->sura_icon) }}" alt="Sura Icon" height="40">
+                                @if($sura->surah_icon)
+                                    <img src="{{ asset('storage/' . $sura->surah_icon) }}" alt="Sura Icon" height="40">
                                 @else
                                     N/A
                                 @endif
                             </td>
                             <td>
-                                <a href="{{route('suraEdit' , ['id' => $sura->id])}}" class="btn btn-info text-white"
+                                <a href="{{route('surahEdit' , ['id' => $sura->id])}}" class="btn btn-info text-white"
                                    style="background-color: #CAAE78;border-color: #CAAE78">Edit</a>
-                                <a href="{{route('suraDelete' , ['id' => $sura->id])}}" class="btn btn-info text-white"
+                                <a href="{{route('surahDelete' , ['id' => $sura->id])}}" class="btn btn-info text-white"
                                    style="background-color: #561B06;border-color: #561B06">Delete</a>
                             </td>
                         </tr>

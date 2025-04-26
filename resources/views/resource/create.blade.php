@@ -69,11 +69,12 @@
                         <input type="url" class="form-control" name="url">
                     </div>
                     <div class="col-lg-6">
-                        <label>Theme</label>
+                        <label>Sura</label>
                         <select class="form-control" name="sura_id">
-                            <option value="0">Please Select Theme...!</option>
-                            @foreach($suras as $sura) @endforeach
-                            <option value="{{$sura->id}}">{{$sura->name_en}}</option>
+                            <option value="">Please Select Sura...!</option>
+                            @foreach($suras as $sura)
+                                <option value="{{$sura->id}}">{{$sura->name_en}}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

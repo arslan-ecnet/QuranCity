@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('themes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
             $table->string('theme_color');
-            $table->string('sort_order');
+            $table->string('theme_image');
             $table->timestamps();
         });
     }

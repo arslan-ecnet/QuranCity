@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sura_details', function (Blueprint $table) {
+        Schema::create('surah_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sura_id')
-                ->constrained()
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->foreignId('surah_id')->constrained('surahs')->onDelete('cascade');
+            $table->foreignId('theme_id')->constrained('themes')->onDelete('cascade');
+            $table->integer('from')->nullable();
+            $table->integer('to')->nullable();
             $table->string('title');
-            $table->string('description');
-            $table->string('sort_order');
-            $table->string('background_color');
+            $table->json('summary')->nullable();
             $table->timestamps();
         });
     }

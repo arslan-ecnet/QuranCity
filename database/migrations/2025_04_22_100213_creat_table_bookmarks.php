@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('bookmarks' , function (Blueprint $table){
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('sura_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->string('verse_from');
-            $table->string('verse_to');
+            $table->foreignId('surah_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('note');
             $table->timestamps();
         });
