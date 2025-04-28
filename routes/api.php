@@ -12,5 +12,9 @@ Route::get('/user', function (Request $request) {
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/', [AuthController::class, 'auth']);
 });
-Route::get('sura' , [SuraController::class,'index']);
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('surah', [SuraController::class, 'index']);
+    Route::post('bookmark', [SuraController::class, 'bookmark']);
+});
 

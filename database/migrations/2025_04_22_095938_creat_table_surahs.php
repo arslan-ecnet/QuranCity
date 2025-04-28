@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('total_verses');
             $table->string('classification');
             $table->string('sub_classification');
-            $table->string('description');
-            $table->string('summary');
+            $table->text('description');
+            $table->string('summary' , 512);
             $table->json('focus')->nullable();
             $table->json('did_you_know')->nullable();
             $table->json('benefits_of_recitation')->nullable();
