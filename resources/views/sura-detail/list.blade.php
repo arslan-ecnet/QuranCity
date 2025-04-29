@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('title')
-    <title>Suras Detail</title>
+    <title>Surahs Detail</title>
 @endsection
 @section('content')
     <div class="dash-content">
         <div class="content-table">
-            <div class="mb-4"><h5>Sura Details</h5></div>
+            <div class="mb-4"><h5>Surah Details</h5></div>
             <a href="{{route('surahDetailCreate')}}" class="btn btn-info text-white mb-3"
                style="background-color: #CAAE78;border-color: #CAAE78">Create</a>
             <div class="table-responsive" style="max-height: 500px; overflow-x: auto;">

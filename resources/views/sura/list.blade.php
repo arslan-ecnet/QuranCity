@@ -41,7 +41,7 @@
     </style>
     <div class="dash-content">
         <div class="content-table">
-            <div class="mb-4"><h5>Suras</h5></div>
+            <div class="mb-4"><h5>Surahs</h5></div>
             <a href="{{route('surahCreate')}}" class="btn btn-info text-white mb-3"
                style="background-color: #CAAE78;border-color: #CAAE78">Create</a>
             <div class="table-responsive">

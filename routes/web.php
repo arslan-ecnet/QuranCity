@@ -21,7 +21,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('themes/edit/{id}',[ThemeController::class,'update'])->name('updateTheme');
     Route::get('themes/delete/{id}',[ThemeController::class,'delete'])->name('deleteTheme');
 
-    Route::prefix('sura')->name('surah')->group(function () {
+    Route::prefix('surah')->name('surah')->group(function () {
         Route::get('/',[SuraController::class,'index'])->name('List');
         Route::get('/create',[SuraController::class,'create'])->name('Create');
         Route::post('/create',[SuraController::class,'save'])->name('Create');

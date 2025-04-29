@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    <title>Create Sura</title>
+    <title>Create Surah Detail</title>
 @endsection
 @section('content')
     <style>
