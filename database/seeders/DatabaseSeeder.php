@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RolesTableSeeder::class,
             SurahsTableSeeder::class,
+            ThemeSeeder::class,
         ]);
     }
 }
