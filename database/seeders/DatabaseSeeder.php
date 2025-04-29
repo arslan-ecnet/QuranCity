@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RolesTableSeeder::class,
             SurahsTableSeeder::class,
             ThemeSeeder::class,
+            SurahDetailSeeder::class,
         ]);
     }
 }
