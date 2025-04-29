@@ -3,6 +3,17 @@
     <title>Quran City</title>
 @endsection
 @section('content')
+    <style>
+        #userComparisonChart {
+            height: 250px !important;
+        }
+
+        @media (max-width: 576px) {
+            #userComparisonChart {
+                height: 250px !important;
+            }
+        }
+    </style>
     <div class="dash-content">
         <div class="content-wrap">
             <div class="row top-content">
@@ -32,21 +43,19 @@
 
         </div>
         <div class="row mt-4">
-            <div class="col-6">
-                <div class="box-content box-shadow p-4">
-                    <div class="d-flex justify-content-between mb-2">
+            <div class="col-12 col-md-6">
+                <div class="box-content box-shadow p-4 h-100">
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-2">
                         <div>
-                            <h6>Users Registered</h6>
+                            <h6 class="mb-1">Users Registered</h6>
                             <div><span class="fw-bold text-warning">This Week: {{ $thisWeekTotal }}</span></div>
                             <div><span class="fw-bold text-secondary">Previous Week: {{ $lastWeekTotal }}</span></div>
                         </div>
                     </div>
-                    <canvas id="userComparisonChart" height="100"></canvas>
+                    <canvas id="userComparisonChart" style="width: 100%; height: 250px;"></canvas>
                 </div>
             </div>
         </div>
-
-
     </div>
 @endsection
 @section('scripts')
