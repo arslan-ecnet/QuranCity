@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $totalUsers = User::count();
+        $totalUsers = User::where('id', '!=', 1)->count();
         $totalSurahs = SuraModel::count();
         $labels = collect(range(0, 6))->map(function ($i) {
             return Carbon::now()->startOfWeek()->addDays($i)->format('D');
