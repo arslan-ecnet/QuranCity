@@ -15,11 +15,7 @@
         <div class="menu-item">
             <h6>Main</h6>
             <ul id="side-menu" class="menu-body">
-                <li>
-                    <a href="{{ route('themeList') }}" class="{{ Request::is('themes*') ? 'active' : '' }}">
-                        <span class="icon"><img src="{{ asset('images/icon-1.png') }}" alt=""></span>Themes
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{route('surahList')}}" class="{{ Request::is('sura*') ? 'active' : '' }}">
                         <span class="icon"><img src="{{ asset('images/icon-2.png') }}" alt=""></span>Suras
@@ -28,6 +24,11 @@
                 <li>
                     <a href="{{route('surahDetailList')}}" class="{{ Request::is('details*') ? 'active' : '' }}">
                         <span class="icon"><img src="{{ asset('images/icon-2.png') }}" alt=""></span>Sura Details
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('themeList') }}" class="{{ Request::is('themes*') ? 'active' : '' }}">
+                        <span class="icon"><img src="{{ asset('images/icon-1.png') }}" alt=""></span>Themes
                     </a>
                 </li>
 {{--                <li>--}}
