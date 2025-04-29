@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\BookMarkModel;
+use  App\Models\SuraDetailModel;
 class SuraModel extends Model
 {
     protected $table = 'surahs';
