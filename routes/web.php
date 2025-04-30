@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Auth;
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('profile',[ProfileController::class,'index'])->name('profile');
+    Route::get('profile',[ProfileController::class,'index'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profileUpdate');
     Route::get('themes',[ThemeController::class,'index'])->name('themeList');
     Route::get('themes/create',[ThemeController::class,'create'])->name('createTheme');
     Route::post('themes/create',[ThemeController::class,'save'])->name('createTheme');

@@ -1,20 +1,24 @@
-<div class="logo-title d-flex d-xl-none justify-content-center align-items-center"><span><img
-            src="images/dashboard-logo.png" alt=""></span><span class="text">Quran City administration</span></div>
-
-<div class="header d-none d-xl-flex align-items-center">
-    <div class="logo d-flex align-items-center"><span><img src="images/dashboard-logo.png" alt=""></span><span
-            class="text">Quran City administration</span></div>
-    {{--        <form action="#" method="post">--}}
-    {{--            <input type="search" class="form-control" placeholder="Search">--}}
-    {{--        </form>--}}
-    {{--        <a href="#" class="notify"><span class="dot"></span><span class="d-none">Notification</span></a>--}}
-    <div class="d-flex user align-items-center">
-        {{--            <div class="flex-grow-0">--}}
-        {{--                <div class="user-img"><img src="images/user.png" alt=""></div>--}}
-        {{--            </div>--}}
-        <div class="flex-grow-1">
-            {{Auth::user()->name}}<small>Administrator</small>
-        </div>
+<div class="header d-none d-xl-flex align-items-center justify-content-between px-4" style="background-color: #561E08; padding: 10px 0;">
+    <!-- Left: Logo and Title -->
+    <div class="d-flex align-items-center">
+        <span><img src="images/dashboard-logo.png" alt="Logo" style="height: 40px;"></span>
+        <span class="text ms-2 text-white fw-bold">QURAN CITY ADMINISTRATION</span>
     </div>
-    {{--        <a href="#" class="down-arrow"><span class="d-none">Link</span></a>--}}
+
+    <!-- Right: User Info -->
+    <div class="d-flex align-items-center">
+        <a href="{{ route('profile') }}" class="d-flex align-items-center text-decoration-none">
+            <div class="user-img me-2">
+                <img src="{{ asset('storage/' . Auth::user()->profile_image) }}"
+                     alt="User"
+                     style="height: 45px; width: 100px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 3px solid #f1f1f1;"
+                     class="rounded-circle">
+            </div>
+            <div class="text-white">
+                {{ Auth::user()->name }}<br>
+                <small class="">Administrator</small>
+            </div>
+        </a>
+
+    </div>
 </div>
