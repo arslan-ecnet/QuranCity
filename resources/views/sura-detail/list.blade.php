@@ -27,11 +27,16 @@
                         <tr>
                             <td>{{$suraDetail->id}}</td>
                             <td>{{$suraDetail->title}}</td>
-                            <td>
-                                @foreach (json_decode($suraDetail->summary ?? '[]') as $item)
-                                    {{ $item }}<br>
-                                @endforeach
+                            <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                title="@foreach (json_decode($suraDetail->summary ?? '[]') as $item) {{ $item }} | @endforeach">
+                                {{
+                                    Str::limit(
+                                        collect(json_decode($suraDetail->summary ?? '[]'))->implode(' | '),
+                                        50
+                                    )
+                                }}
                             </td>
+
                             <td>{{$suraDetail->sura->name}}</td>
                             <td>{{$suraDetail->theme->name}}</td>
                             <td>{{$suraDetail->from}}</td>

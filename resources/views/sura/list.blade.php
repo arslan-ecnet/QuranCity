@@ -73,33 +73,48 @@
                             <td>{{$sura->total_verses}}</td>
                             <td>{{$sura->classification}}</td>
                             <td>{{$sura->sub_classification}}</td>
-                            <td>{{ Str::limit($sura->description, 100) }}</td>
-                            <td>{{$sura->summary}}</td>
-                            <td>
-                                @foreach (json_decode($sura->focus ?? '[]') as $item)
-                                    {{ $item }}<br>
-                                @endforeach
+                            <td class="text-truncate" style="max-width: 200px;" title="{{ $sura->description }}">
+                                {{ Str::limit($sura->description, 50) }}
                             </td>
-                            <td>
-                                @foreach (json_decode($sura->did_you_know ?? '[]') as $item)
-                                    {{ $item }}<br>
-                                @endforeach
+
+                            <td class="text-truncate" style="max-width: 200px;" title="{{ $sura->summary }}">
+                                {{ Str::limit($sura->summary, 50) }}
                             </td>
-                            <td>
-                                @foreach (json_decode($sura->benefits_of_recitation ?? '[]') as $item)
-                                    {{ $item }}<br>
-                                @endforeach
+
+                            <td class="text-truncate" style="max-width: 200px;" title="{{ implode(', ', json_decode($sura->focus ?? '[]')) }}">
+                                {{ Str::limit(implode(', ', json_decode($sura->focus ?? '[]')), 50) }}
                             </td>
-                            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                @foreach (json_decode($sura->selected_ayat ?? '[]') as $item)
-                                    @if (is_object($item))
-                                        Ayat: {{ $item->ayat ?? '' }} <br>
-                                        Summary: {{ $item->summary ?? '' }} <br><br>
-                                    @else
-                                        {{ $item }} <br><br>
-                                    @endif
-                                @endforeach
+
+                            <td class="text-truncate" style="max-width: 200px;" title="{{ implode(', ', json_decode($sura->did_you_know ?? '[]')) }}">
+                                {{ Str::limit(implode(', ', json_decode($sura->did_you_know ?? '[]')), 50) }}
                             </td>
+
+                            <td class="text-truncate" style="max-width: 200px;" title="{{ implode(', ', json_decode($sura->benefits_of_recitation ?? '[]')) }}">
+                                {{ Str::limit(implode(', ', json_decode($sura->benefits_of_recitation ?? '[]')), 50) }}
+                            </td>
+
+                            <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                title="@foreach (json_decode($sura->selected_ayat ?? '[]') as $item)
+        @if (is_object($item))
+            Ayat: {{ $item->ayat ?? '' }} - Summary: {{ $item->summary ?? '' }} |
+        @else
+            {{ $item }} |
+        @endif
+    @endforeach">
+                                {{
+                                    Str::limit(
+                                        collect(json_decode($sura->selected_ayat ?? '[]'))->map(function($item) {
+                                            if (is_object($item)) {
+                                                return 'Ayat: ' . ($item->ayat ?? '') . ' - Summary: ' . ($item->summary ?? '');
+                                            } else {
+                                                return $item;
+                                            }
+                                        })->implode(' | '), 50
+                                    )
+                                }}
+                            </td>
+
+
 
                             <td>
                                 @if($sura->surah_icon)
