@@ -125,7 +125,7 @@
                             </td>
                             <td>
                                 <a href="{{route('surahEdit' , ['id' => $sura->id])}}" class="btn btn-info text-white"
-                                   style="background-color: #CAAE78;border-color: #CAAE78">Edit</a>
+                                   style="background-color: #CAAE78;border-color: #CAAE78">Edit</a><hr>
                                 <a href="{{route('surahDelete' , ['id' => $sura->id])}}" class="btn btn-info text-white"
                                    style="background-color: #561B06;border-color: #561B06">Delete</a>
                             </td>
