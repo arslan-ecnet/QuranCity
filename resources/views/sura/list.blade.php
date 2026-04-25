@@ -73,12 +73,12 @@
                             <td>{{$sura->total_verses}}</td>
                             <td>{{$sura->classification}}</td>
                             <td>{{$sura->sub_classification}}</td>
-                            <td class="text-truncate" style="max-width: 200px;" title="{{ $sura->description }}">
-                                {{ Str::limit($sura->description, 50) }}
+                            <td class="text-truncate" style="max-width: 200px;" title="{{ strip_tags($sura->description) }}">
+                                {{ Str::limit(strip_tags($sura->description), 50) }}
                             </td>
 
-                            <td class="text-truncate" style="max-width: 200px;" title="{{ $sura->summary }}">
-                                {{ Str::limit($sura->summary, 50) }}
+                            <td class="text-truncate" style="max-width: 200px;" title="{{ strip_tags($sura->summary) }}">
+                                {{ Str::limit(strip_tags($sura->summary), 50) }}
                             </td>
 
                             <td class="text-truncate" style="max-width: 200px;" title="{{ implode(', ', json_decode($sura->focus ?? '[]')) }}">

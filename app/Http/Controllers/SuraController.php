@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\QuranSurah;
 use App\Models\ResourcesModel;
 use App\Models\SuburbModel;
 use App\Models\SuraDetailModel;
@@ -18,7 +19,7 @@ class SuraController extends Controller
     }
     public function create()
     {
-        $quranSurahs = \App\Models\QuranSurah::all();
+        $quranSurahs = QuranSurah::all();
         return view('sura.create', compact('quranSurahs'));
     }
     public function save(Request $request)
