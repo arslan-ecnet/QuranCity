@@ -3,6 +3,31 @@
     <title>Edit Surah</title>
 @endsection
 @section('content')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        /* Select2 Bootstrap form-control styling */
+        .select2-container .select2-selection--single {
+            height: calc(1.5em + .75rem + 2px) !important;
+            border: 1px solid #ced4da !important;
+            border-radius: .25rem !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #495057 !important;
+            line-height: normal !important;
+            padding-left: .75rem !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 100% !important;
+            right: 10px !important;
+        }
+        .select2-container--default.select2-container--focus .select2-selection--single {
+            border-color: #80bdff !important;
+            outline: 0 !important;
+            box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25) !important;
+        }
+    </style>
     <div class="dash-content">
         <div class="mb-3">
             @if(session('error'))
@@ -24,8 +49,15 @@
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
                     <div class="col-lg-6">
-                        <label>Surah Name <small class="text-muted">(Should come from the Quran Surahs table)</small></label>
-                        <input type="text" class="form-control" name="name" value="{{ old('name', $surah->name) }}">
+                        <label>Surah Name</label>
+                        <select class="form-control" name="name" id="surah_name_select">
+                            <option value="">-- Select Surah --</option>
+                            @foreach($quranSurahs as $qSurah)
+                                <option value="{{ $qSurah->name_english }}" data-number="{{ $qSurah->id }}" data-verses="{{ $qSurah->total_verses }}" {{ (old('name', $surah->name) == $qSurah->name_english) ? 'selected' : '' }}>
+                                    {{ $qSurah->name_english }} ({{ $qSurah->name_arabic }}) {{$qSurah->name_transliteration}}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-lg-6">
                         <label>Surah Icon</label>
@@ -37,11 +69,11 @@
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
-                        <label>Surah Number <small class="text-muted">(Should come from the Quran Surahs table)</small></label>
+                        <label>Surah Number</label>
                         <input type="number" class="form-control" name="surah_number" value="{{ old('surah_number', $surah->surah_number) }}">
                     </div>
                     <div class="col-lg-6">
-                        <label>Total Verses <small class="text-muted">(Should come from the Quran Surahs table)</small></label>
+                        <label>Total Verses</label>
                         <input type="number" class="form-control" name="total_verses" value="{{ old('total_verses', $surah->total_verses) }}">
                     </div>
                 </div>
@@ -179,6 +211,54 @@
                 option.textContent = "Madani";
                 subClassification.appendChild(option);
             }
+        });
+
+        document.getElementById('surah_name_select').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const surahNumber = selectedOption.getAttribute('data-number');
+            const totalVerses = selectedOption.getAttribute('data-verses');
+
+            if(surahNumber && totalVerses) {
+                document.querySelector('input[name="surah_number"]').value = surahNumber;
+                document.querySelector('input[name="total_verses"]').value = totalVerses;
+            } else {
+                document.querySelector('input[name="surah_number"]').value = '';
+                document.querySelector('input[name="total_verses"]').value = '';
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#surah_name_select').select2({
+                placeholder: "-- Select Surah --",
+                allowClear: true
+            });
+
+            $('#surah_name_select').on('select2:select', function (e) {
+                const selectedOption = e.params.data.element;
+                const surahNumber = selectedOption.getAttribute('data-number');
+                const totalVerses = selectedOption.getAttribute('data-verses');
+
+                if(surahNumber && totalVerses) {
+                    document.querySelector('input[name="surah_number"]').value = surahNumber;
+                    document.querySelector('input[name="total_verses"]').value = totalVerses;
+                } else {
+                    document.querySelector('input[name="surah_number"]').value = '';
+                    document.querySelector('input[name="total_verses"]').value = '';
+                }
+            });
+
+            $('#surah_name_select').on('select2:unselect', function (e) {
+                document.querySelector('input[name="surah_number"]').value = '';
+                document.querySelector('input[name="total_verses"]').value = '';
+            });
+
+            $('#surah_name_select').on('select2:open', function () {
+                setTimeout(function() {
+                    document.querySelector('.select2-search__field').focus();
+                }, 10);
+            });
         });
 
         function addAyat() {

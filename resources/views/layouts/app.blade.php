@@ -56,7 +56,6 @@
     @include('layouts.footer')
 
 
-    @yield('scripts')
 </div>
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
@@ -69,6 +68,8 @@
         $("#datepicker").datepicker();
     });
 </script>
+
+@yield('scripts')
 
 </body>
 </html>

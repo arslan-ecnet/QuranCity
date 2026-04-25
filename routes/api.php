@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\QuranApiController;
 use App\Http\Controllers\API\SuraController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +19,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('bookmark', [SuraController::class, 'bookmark']);
 });
 
+Route::group(['prefix' => 'quran'], function () {
+    Route::get('surahs', [QuranApiController::class, 'getAllSurahs']);
+    Route::get('surah/{id}', [QuranApiController::class, 'getSurah']);
+});

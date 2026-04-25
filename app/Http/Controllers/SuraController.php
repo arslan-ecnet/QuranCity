@@ -18,7 +18,8 @@ class SuraController extends Controller
     }
     public function create()
     {
-        return view('sura.create');
+        $quranSurahs = \App\Models\QuranSurah::all();
+        return view('sura.create', compact('quranSurahs'));
     }
     public function save(Request $request)
     {
@@ -74,7 +75,8 @@ class SuraController extends Controller
         $surah->did_you_know = json_decode($surah->did_you_know, true);
         $surah->benefits_of_recitation = json_decode($surah->benefits_of_recitation, true);
         $surah->selected_ayat = json_decode($surah->selected_ayat, true) ?? [];
-        return view('sura.edit' , ['surah' => $surah]);
+        $quranSurahs = \App\Models\QuranSurah::all();
+        return view('sura.edit' , ['surah' => $surah, 'quranSurahs' => $quranSurahs]);
     }
     public function update(Request $request , $id)
     {

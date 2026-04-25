@@ -16,11 +16,14 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
-            UserSeeder::class,
-            RolesTableSeeder::class,
-            SurahsTableSeeder::class,
-            ThemeSeeder::class,
-            SurahDetailSeeder::class,
+//            UserSeeder::class,
+//            RolesTableSeeder::class,
+//            SurahsTableSeeder::class,
+//            ThemeSeeder::class,
+//            SurahDetailSeeder::class,
+            QuranTablesSeeder::class,
+            VerseSeeder::class,
+            TranslationAndAudioSeeder::class,
         ]);
     }
 }
