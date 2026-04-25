@@ -53,7 +53,7 @@
                         <select class="form-control" name="name" id="surah_name_select">
                             <option value="">-- Select Surah --</option>
                             @foreach($quranSurahs as $qSurah)
-                                <option value="{{ $qSurah->name_english - $qSurah->name_transliteration}}" data-number="{{ $qSurah->id }}" data-verses="{{ $qSurah->total_verses }}" {{ (old('name', $surah->name) == $qSurah->name_english) ? 'selected' : '' }}>
+                                <option value="{{ $qSurah->name_english ."-". $qSurah->name_transliteration}}" data-number="{{ $qSurah->id }}" data-verses="{{ $qSurah->total_verses }}" {{ (old('name', $surah->name) == $qSurah->name_english) ? 'selected' : '' }}>
                                     {{ $qSurah->name_english }} ({{ $qSurah->name_arabic }}) {{$qSurah->name_transliteration}}
                                 </option>
                             @endforeach
