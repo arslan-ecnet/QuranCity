@@ -55,7 +55,7 @@
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
                     <div class="col-lg-6">
-                        <label>Surah Name</label>
+                        <label>Surah Name <small class="text-muted">(Should come from the Quran Surahs table)</small></label>
                         <input type="text" class="form-control" name="name">
                     </div>
                     <div class="col-lg-6">
@@ -65,11 +65,11 @@
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
-                        <label>Surah Number</label>
+                        <label>Surah Number <small class="text-muted">(Should come from the Quran Surahs table)</small></label>
                         <input type="number" class="form-control" name="surah_number">
                     </div>
                     <div class="col-lg-6">
-                        <label>Total Verses</label>
+                        <label>Total Verses <small class="text-muted">(Should come from the Quran Surahs table)</small></label>
                         <input type="number" class="form-control" name="total_verses">
                     </div>
                 </div>
@@ -92,11 +92,11 @@
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
                         <label>Description</label>
-                        <textarea class="form-control" name="description"></textarea>
+                        <textarea id="description_editor" class="form-control ckeditor" name="description" rows="4"></textarea>
                     </div>
                     <div class="col-lg-6">
                         <label>Summary</label>
-                        <input type="text" class="form-control" name="summary">
+                        <textarea id="summary_editor" class="form-control ckeditor" name="summary" rows="4"></textarea>
                     </div>
                 </div>
                 <div class="row top-content mt-4">
@@ -106,7 +106,7 @@
                         <div id="did-you-know-group">
                             <div class="row mb-2 did-you-know-item">
                                 <div class="col">
-                                    <input class="form-control" name="did_you_know[]">
+                                    <textarea class="form-control" name="did_you_know[]" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -115,8 +115,11 @@
                         <label>Focus</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3" onclick="addFocus()">+ Add</a>
                         <div id="focus-group">
                             <div class="row mb-2 focus-item">
-                                <div class="col">
-                                    <input class="form-control" name="focus[]">
+                                <div class="col input-group">
+                                    <input type="text" class="form-control" name="focus[]">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="formatTextCase(this)">Format Text</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +160,25 @@
     </div>
 @endsection
 @section("scripts")
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            CKEDITOR.config.versionCheck = false;
+            if (document.getElementById('description_editor')) {
+                CKEDITOR.replace('description_editor');
+            }
+            if (document.getElementById('summary_editor')) {
+                CKEDITOR.replace('summary_editor');
+            }
+        });
+
+        function formatTextCase(btn) {
+            const input = btn.parentElement.previousElementSibling;
+            if (input && input.value) {
+                // Convert to Title Case
+                input.value = input.value.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+            }
+        }
         document.getElementById("classification").addEventListener("change", function () {
             const subClassification = document.getElementById("sub_classification");
             const value = this.value;
@@ -202,7 +223,7 @@
             newRow.classList.add('row', 'mb-2', 'did-you-know-item');
             newRow.innerHTML = `
                                 <div class="col">
-                                    <input type="text" name="did_you_know[]" class="form-control">
+                                    <textarea name="did_you_know[]" class="form-control" rows="3"></textarea>
                                 </div>
                             `;
             group.appendChild(newRow);
@@ -213,8 +234,11 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'mb-2', 'focus-item');
             newRow.innerHTML = `
-                                <div class="col">
+                                <div class="col input-group">
                                     <input type="text" name="focus[]" class="form-control">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="formatTextCase(this)">Format Text</button>
+                                    </div>
                                 </div>
                             `;
             group.appendChild(newRow);

@@ -125,7 +125,10 @@
     <footer class="login-footer">
         <div class="container-fluid">
             <ul>
-                <li>Copyright © 2023 QFatima. All rights reserved</li>
+                <?php
+                $year = now()->format('Y')
+                ?>
+                <li>Copyright © {{$year}} QFatima. All rights reserved</li>
                 <li>Developed by <img src="images/footer-icon.png" alt=""></li>
             </ul>
         </div>

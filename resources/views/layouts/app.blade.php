@@ -31,7 +31,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Index</title>
-{{--    <link href="style.css" rel="stylesheet">--}}
+    {{--    <link href="style.css" rel="stylesheet">--}}
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link href="{{asset('css/all.css')}}" rel="stylesheet">
     <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet">
@@ -50,10 +50,10 @@
     @include('layouts.header')
     @include('layouts.sidebar')
     <div class="dash-body">
-    @include('layouts.header2')
+        @include('layouts.header2')
         @yield('content')
-        @include('layouts.footer')
     </div>
+    @include('layouts.footer')
 
 
     @yield('scripts')

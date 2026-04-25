@@ -31,10 +31,10 @@
     </style>
     <div class="dash-content">
 
-        {{--        <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
-        {{--            <span>Show:</span>--}}
-        {{--            <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
-        {{--        </div>--}}
+        {{-- <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
+            {{-- <span>Show:</span>--}}
+            {{-- <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
+            {{-- </div>--}}
         <div class="mb-3">
             @if(session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
@@ -50,7 +50,8 @@
                 </div>
             @endif
         </div>
-        <form action="{{route('surahDetailUpdate' , ['id' => $suraDetatil->id])}}" method="POST" enctype="multipart/form-data" onsubmit="removeEmptySummaries()">
+        <form action="{{route('surahDetailUpdate', ['id' => $suraDetatil->id])}}" method="POST"
+            enctype="multipart/form-data" onsubmit="removeEmptySummaries()">
             @csrf
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
@@ -59,13 +60,12 @@
                         <input type="text" class="form-control" name="title" value="{{$suraDetatil->title}}">
                     </div>
                     <div class="col-lg-6">
-                        <label>Summary</label>&nbsp&nbsp&nbsp<a type="button" class=""
-                                                                onclick="addSummary()">+ Add</a>
+                        <label>Summary</label>&nbsp&nbsp&nbsp<a type="button" class="" onclick="addSummary()">+ Add</a>
                         <div id="summary-group">
-                            @foreach ($suraDetatil->summary ?? [] as $fact)
+                            @foreach ($suraDetatil->summary ?? [] as $index => $fact)
                                 <div class=" mb-2 summary-item">
                                     <div class="col">
-                                        <input class="form-control" name="summary[]" value="{{$fact}}">
+                                        <textarea id="summary_{{ $index }}" class="form-control ckeditor" name="summary[]" rows="4">{{$fact}}</textarea>
                                     </div>
                                 </div>
                             @endforeach
@@ -102,7 +102,7 @@
                             <option value="">Please Select Theme...!</option>
                             @foreach($themes as $theme)
                                 <option value="{{ $theme->id }}" {{ isset($suraDetatil) && $suraDetatil->theme_id == $theme->id ? 'selected' : '' }}>
-                                    {{ $theme->name }}
+                                    {{ ucwords(strtolower($theme->name)) }}
                                 </option>
                             @endforeach
                         </select>
@@ -115,17 +115,32 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            CKEDITOR.config.versionCheck = false;
+            
+            // Initialize existing textareas
+            @foreach ($suraDetatil->summary ?? [] as $index => $fact)
+                if (document.getElementById('summary_{{ $index }}')) {
+                    CKEDITOR.replace('summary_{{ $index }}');
+                }
+            @endforeach
+        });
+
+        let summaryCount = 1000;
         function addSummary() {
             const group = document.getElementById('summary-group');
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'mb-2', 'summary-item');
+            const newId = 'summary_edit_' + summaryCount++;
             newRow.innerHTML = `
-                                <div class="col">
-                                    <input type="text" name="summary[]" class="form-control">
-                                </div>
-                            `;
+                                    <div class="col">
+                                        <textarea id="${newId}" name="summary[]" class="form-control" rows="4"></textarea>
+                                    </div>
+                                `;
             group.appendChild(newRow);
+            CKEDITOR.replace(newId);
         }
         function removeEmptySummaries() {
             const summaries = document.querySelectorAll('#summary-group input[name="summary[]"]');

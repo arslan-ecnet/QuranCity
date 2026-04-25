@@ -64,7 +64,7 @@
                         <div id="summary-group">
                             <div class=" mb-2 summary-item">
                                 <div class="col">
-                                    <input class="form-control" name="summary[]">
+                                    <textarea id="summary_0" class="form-control ckeditor" name="summary[]" rows="4"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                         <select class="form-control" name="theme_id">
                             <option value="">Please Select Theme...!</option>
                             @foreach($themes as $theme)
-                                <option value="{{$theme->id}}">{{$theme->name}}</option>
+                                <option value="{{$theme->id}}">{{ ucwords(strtolower($theme->name)) }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -108,17 +108,29 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            CKEDITOR.config.versionCheck = false;
+            // Initialize existing textarea
+            if (document.getElementById('summary_0')) {
+                CKEDITOR.replace('summary_0');
+            }
+        });
+
+        let summaryCount = 1;
         function addSummary() {
             const group = document.getElementById('summary-group');
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'mb-2', 'summary-item');
+            const newId = 'summary_' + summaryCount++;
             newRow.innerHTML = `
                                 <div class="col">
-                                    <input type="text" name="summary[]" class="form-control">
+                                    <textarea id="${newId}" name="summary[]" class="form-control" rows="4"></textarea>
                                 </div>
                             `;
             group.appendChild(newRow);
+            CKEDITOR.replace(newId);
         }
         function removeEmptySummaries() {
             const summaries = document.querySelectorAll('#summary-group input[name="summary[]"]');
