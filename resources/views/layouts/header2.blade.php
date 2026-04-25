@@ -1,7 +1,7 @@
 <div class="header d-none d-xl-flex align-items-center justify-content-between px-4" style="background-color: #561E08; padding: 10px 0;">
     <!-- Left: Logo and Title -->
     <div class="d-flex align-items-center">
-        <span><img src="images/dashboard-logo.png" alt="Logo" style="height: 40px;"></span>
+        <span><img src="{{ asset('images/dashboard-logo.png') }}" alt="Logo" style="height: 40px;"></span>
         <span class="text ms-2 text-white fw-bold">QURAN CITY ADMINISTRATION</span>
     </div>
 
