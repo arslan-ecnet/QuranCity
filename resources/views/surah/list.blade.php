@@ -1,34 +1,37 @@
 @extends('layouts.app')
 @section('title')
-    <title>Verses List</title>
+    <title>Surahs List</title>
 @endsection
 @section('content')
     <style>
-
+        /*.dash-content { min-height: calc(100vh - 100px); }*/
+        /*.content-table { height: 100%; overflow: hidden; }*/
+        /*.table-responsive { max-height: 100vh; overflow-y: auto; }*/
+        /*#dataTable thead { position: sticky; top: 0; background-color: #fff; z-index: 10; }*/
     </style>
     <div class="dash-content">
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         <div class="content-table">
-            <div class="mb-4"><h5>Verses</h5></div>
-            <a href="{{route('verseCreate')}}" class="btn btn-info text-white mb-3"
-               style="background-color: #CAAE78;border-color: #CAAE78">Create</a>
+            <div class="mb-4"><h5>Surahs</h5></div>
+            <a href="{{route('surahCreate')}}" class="btn btn-info text-white mb-3"
+               style="background-color: #CAAE78;border-color: #CAAE78">Create Surah</a>
             <div class="table-responsive">
                 <table class="table table-striped table-hover align-middle" id="dataTable" style="min-width: 1000px;">
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Surah</th>
-                        <th>Ayah Number</th>
-                        <th>Ayah Global Number</th>
-                        <th>Text Arabic</th>
-                        <th>Simple Text</th>
-                        <th>Sajdah</th>
-                        <th>Juz</th>
+                        <th>Name English</th>
+                        <th>Name Arabic</th>
+                        <th>Transliteration</th>
+                        <th>Type</th>
+                        <th>Order</th>
+                        <th>Verses</th>
+                        <th>Rukus</th>
                         <th>Hizb</th>
-                        <th>Rub El Hizb</th>
-                        <th>Page Number</th>
+                        <th>Juz Start</th>
+                        <th>Juz End</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -51,13 +54,13 @@
                     "processing": true,
                     "serverSide": true,
                     "ajax": {
-                        "url": "{{ route('verseList') }}",
+                        "url": "{{ route('surahList') }}",
                         "type": "GET"
                     },
                     "pageLength": 10,
                     "order": [[0, "asc"]],
                     "columnDefs": [
-                        { "orderable": false, "targets": [11] } // disable sorting for Action column
+                        { "orderable": false, "targets": [11] }
                     ]
                 });
             }

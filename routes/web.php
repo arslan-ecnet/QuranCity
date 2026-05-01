@@ -6,6 +6,7 @@ use App\Http\Controllers\SuraController;
 use App\Http\Controllers\SuraDetailController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\VerseController;
+use App\Http\Controllers\VerseDetailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('/edit/{id}', [SuraController::class, 'update'])->name('Update');
         Route::get('/delete/{id}', [SuraController::class, 'delete'])->name('Delete');
     });
-    Route::prefix('surah-details')->name('surahDetail')->group(function () {
+    Route::prefix('surah/details')->name('surahDetail')->group(function () {
         Route::get('/', [SuraDetailController::class, 'index'])->name('List');
         Route::get('/create', [SuraDetailController::class, 'create'])->name('Create');
         Route::post('/create', [SuraDetailController::class, 'save'])->name('Create');
@@ -46,12 +47,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/delete/{id}', [VerseController::class, 'delete'])->name('Delete');
     });
     Route::prefix('verse-details')->name('verseDetail')->group(function () {
-        Route::get('/', [SuraDetailController::class, 'index'])->name('List');
-        Route::get('/create', [SuraDetailController::class, 'create'])->name('Create');
-        Route::post('/create', [SuraDetailController::class, 'save'])->name('Create');
-        Route::get('/edit/{id}', [SuraDetailController::class, 'edit'])->name('Edit');
-        Route::post('/edit/{id}', [SuraDetailController::class, 'update'])->name('Update');
-        Route::get('/delete/{id}', [SuraDetailController::class, 'delete'])->name('Delete');
+        Route::get('/', [VerseDetailController::class, 'index'])->name('List');
+        Route::get('/create', [VerseDetailController::class, 'create'])->name('Create');
+        Route::post('/create', [VerseDetailController::class, 'save'])->name('Create');
+        Route::get('/edit/{id}', [VerseDetailController::class, 'edit'])->name('Edit');
+        Route::post('/edit/{id}', [VerseDetailController::class, 'update'])->name('Update');
+        Route::get('/delete/{id}', [VerseDetailController::class, 'delete'])->name('Delete');
     });
 
 });

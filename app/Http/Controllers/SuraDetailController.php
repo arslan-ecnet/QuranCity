@@ -2,76 +2,138 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SuraDetailModel;
+use App\Models\SurahDetail;
 use App\Models\SuraModel;
 use App\Models\Theme;
+use App\Models\VerseDetailModel;
 use Illuminate\Http\Request;
 
 class SuraDetailController extends Controller
 {
     public function index()
     {
-        $suraDetails = SuraDetailModel::all();
-        return view('sura-detail.list',['suraDetails' => $suraDetails]);
+        $suras = SurahDetail::all();
+        return view('surah-detail.list' , ['suras' => $suras]);
     }
     public function create()
     {
-        $suras = SuraModel::all();
-        $themes = Theme::all();
-        return view('sura-detail.create',['suras' => $suras , 'themes' => $themes]);
+        $quranSurahs = SuraModel::all();
+        return view('surah-detail.create', compact('quranSurahs'));
     }
     public function save(Request $request)
     {
-        $request->validate([
-           'surah_id' => 'required',
-           'theme_id' => 'required',
-           'title' => 'required',
-            'from' => 'required',
-        ]);
-        $suraDetail = new SuraDetailModel();
-        $suraDetail->surah_id = $request->surah_id;
-        $suraDetail->title = $request->title;
-        $suraDetail->theme_id = $request->theme_id;
-        $suraDetail->from = $request->from;
-        $suraDetail->to = $request->to;
-        $suraDetail->summary = json_encode($request->input('summary', []));
+        $ayatTitles = $request->input('ayat_title', []);
+        $ayatSummaries = $request->input('ayat_summary', []);
 
-        $suraDetail->save();
+        $selectedAyat = [];
+
+        foreach ($ayatTitles as $index => $title) {
+            if (!empty($title) && !empty($ayatSummaries[$index])) {
+                $selectedAyat[] = [
+                    'ayat' => $title,
+                    'summary' => $ayatSummaries[$index],
+                ];
+            }
+        }
+        $request->validate([
+            'name' => 'required',
+            'surah_number' => 'required',
+            'total_verses' => 'required',
+            'classification' => 'required',
+            'sub_classification' => 'required',
+            'description' => 'required',
+            'summary' => 'required',
+            'focus' => 'required',
+            'did_you_know' => 'required',
+            'benefits_of_recitation' => 'required',
+//           'selected_ayat' => 'required',
+            'surah_icon' => 'required',
+        ]);
+        $sura = new SurahDetail();
+        $sura->name = $request->name;
+        $sura->surah_number = $request->surah_number;
+        $sura->total_verses = $request->total_verses;
+        $sura->classification = $request->classification;
+        $sura->sub_classification = $request->sub_classification;
+        $sura->description = $request->description;
+        $sura->summary = $request->summary;
+        $sura->focus = json_encode($request->input('focus', []));
+        $sura->did_you_know = json_encode($request->input('did_you_know', []));
+        $sura->benefits_of_recitation = json_encode($request->input('benefits_of_recitation', []));
+        $sura->selected_ayat = json_encode($selectedAyat);
+        if ($request->hasFile('surah_icon')) {
+            $sura->surah_icon = $this->uploadImage($request->file('surah_icon'));
+        }
+        $sura->save();
         return redirect(route('surahDetailList'));
     }
     public function edit($id)
     {
-        $suraDetail = SuraDetailModel::find($id);
-        $suras = SuraModel::all();
-        $themes = Theme::all();
-        $suraDetail->summary = json_decode($suraDetail->summary, true);
-
-        return view('sura-detail.edit' , ['suraDetatil' => $suraDetail , 'suras' => $suras , 'themes' => $themes]);
+        $surah = SurahDetail::find($id);
+        $surah->focus = json_decode($surah->focus, true);
+        $surah->did_you_know = json_decode($surah->did_you_know, true);
+        $surah->benefits_of_recitation = json_decode($surah->benefits_of_recitation, true);
+        $surah->selected_ayat = json_decode($surah->selected_ayat, true) ?? [];
+        $quranSurahs = SuraModel::all();
+        return view('surah-detail.edit' , ['surah' => $surah, 'quranSurahs' => $quranSurahs]);
     }
-    public function update(Request $request, $id)
+    public function update(Request $request , $id)
     {
-        $request->validate([
-            'surah_id' => 'required',
-            'theme_id' => 'required',
-            'title' => 'required',
-            'from' => 'required',
-        ]);
-        $suraDetail = SuraDetailModel::find($id);
-        $suraDetail->surah_id = $request->surah_id;
-        $suraDetail->title = $request->title;
-        $suraDetail->theme_id = $request->theme_id;
-        $suraDetail->from = $request->from;
-        $suraDetail->to = $request->to;
-        $suraDetail->summary = json_encode($request->input('summary', []));
+        $ayatTitles = $request->input('ayat_title', []);
+        $ayatSummaries = $request->input('ayat_summary', []);
 
-        $suraDetail->save();
+        $selectedAyat = [];
+
+        foreach ($ayatTitles as $index => $title) {
+            if (!empty($title) && !empty($ayatSummaries[$index])) {
+                $selectedAyat[] = [
+                    'ayat' => $title,
+                    'summary' => $ayatSummaries[$index],
+                ];
+            }
+        }
+        $request->validate([
+            'name' => 'required',
+            'surah_number' => 'required',
+            'total_verses' => 'required',
+            'classification' => 'required',
+            'sub_classification' => 'required',
+            'description' => 'required',
+            'summary' => 'required',
+            'focus' => 'required',
+            'did_you_know' => 'required',
+            'benefits_of_recitation' => 'required',
+        ]);
+        $sura = SurahDetail::find($id);
+        $sura->name = $request->name;
+        $sura->surah_number = $request->surah_number;
+        $sura->total_verses = $request->total_verses;
+        $sura->classification = $request->classification;
+        $sura->sub_classification = $request->sub_classification;
+        $sura->description = $request->description;
+        $sura->summary = $request->summary;
+        $sura->focus = json_encode($request->input('focus', []));
+        $sura->did_you_know = json_encode($request->input('did_you_know', []));
+        $sura->benefits_of_recitation = json_encode($request->input('benefits_of_recitation', []));
+        $sura->selected_ayat = json_encode($selectedAyat);
+        if ($request->hasFile('surah_icon')) {
+            $sura->surah_icon = $this->uploadImage($request->file('surah_icon'));
+        }
+        $sura->save();
         return redirect(route('surahDetailList'));
     }
     public function delete($id)
     {
-        $suraDetail = SuraDetailModel::find($id);
-        $suraDetail->delete();
+        $sura = SurahDetail::find($id);
+        $sura->delete();
         return redirect(route('surahDetailList'));
-
+    }
+    private function uploadImage($image)
+    {
+        if ($image) {
+            $path = $image->store('surah_icon', 'public');
+            return 'surah_icon/' . basename($path);
+        }
+        return null;
     }
 }

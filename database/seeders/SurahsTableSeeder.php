@@ -9,7 +9,7 @@ class SurahsTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('surahs')->insert([
+        DB::table('surah_details')->insert([
             'id' => 1,
             'name' => 'AL-BAQARA - THE COW',
             'surah_number' => 2,

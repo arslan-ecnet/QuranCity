@@ -42,7 +42,7 @@
     <div class="dash-content">
         <div class="content-table">
             <div class="mb-4"><h5>Surahs</h5></div>
-            <a href="{{route('surahCreate')}}" class="btn btn-info text-white mb-3"
+            <a href="{{route('surahDetailCreate')}}" class="btn btn-info text-white mb-3"
                style="background-color: #CAAE78;border-color: #CAAE78">Create</a>
             <div class="table-responsive">
                 <table class="table table-striped table-hover align-middle" id="dataTable" style="min-width: 1000px;">
@@ -124,9 +124,9 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{route('surahEdit' , ['id' => $sura->id])}}" class="btn btn-info text-white"
+                                <a href="{{route('surahDetailEdit' , ['id' => $sura->id])}}" class="btn btn-info text-white"
                                    style="background-color: #CAAE78;border-color: #CAAE78">Edit</a><hr>
-                                <a href="{{route('surahDelete' , ['id' => $sura->id])}}" class="btn btn-info text-white"
+                                <a href="{{route('surahDetailDelete' , ['id' => $sura->id])}}" class="btn btn-info text-white"
                                    style="background-color: #561B06;border-color: #561B06">Delete</a>
                             </td>
                         </tr>

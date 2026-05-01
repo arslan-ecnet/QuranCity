@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SuraModel;
 
-class SuraDetailModel extends Model
+class VerseDetailModel extends Model
 {
-    protected $table = 'surah_details';
+    protected $table = 'verse_details';
     public function sura()
     {
         return $this->belongsTo(SuraModel::class, 'surah_id', 'id');

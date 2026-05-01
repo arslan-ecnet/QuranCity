@@ -50,19 +50,19 @@
                 </div>
             @endif
         </div>
-        <form action="{{route('surahDetailUpdate', ['id' => $suraDetatil->id])}}" method="POST"
+        <form action="{{route('verseDetailUpdate', ['id' => $verseDetatil->id])}}" method="POST"
             enctype="multipart/form-data" onsubmit="removeEmptySummaries()">
             @csrf
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
                     <div class="col-lg-6">
                         <label>Title</label>
-                        <input type="text" class="form-control" name="title" value="{{$suraDetatil->title}}">
+                        <input type="text" class="form-control" name="title" value="{{$verseDetatil->title}}">
                     </div>
                     <div class="col-lg-6">
                         <label>Summary</label>&nbsp&nbsp&nbsp<a type="button" class="" onclick="addSummary()">+ Add</a>
                         <div id="summary-group">
-                            @foreach ($suraDetatil->summary ?? [] as $index => $fact)
+                            @foreach ($verseDetatil->summary ?? [] as $index => $fact)
                                 <div class=" mb-2 summary-item">
                                     <div class="col">
                                         <textarea id="summary_{{ $index }}" class="form-control ckeditor" name="summary[]" rows="4">{{$fact}}</textarea>
@@ -76,11 +76,11 @@
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
                         <label>From</label>
-                        <input type="text" class="form-control" name="from" value="{{$suraDetatil->from}}">
+                        <input type="text" class="form-control" name="from" value="{{$verseDetatil->from}}">
                     </div>
                     <div class="col-lg-6">
                         <label>To</label>
-                        <input type="text" class="form-control" name="to" value="{{$suraDetatil->to}}">
+                        <input type="text" class="form-control" name="to" value="{{$verseDetatil->to}}">
                     </div>
 
                 </div>
@@ -90,8 +90,8 @@
                         <select class="form-control" name="surah_id">
                             <option value="">Please Select Sura...!</option>
                             @foreach($suras as $sura)
-                                <option value="{{ $sura->id }}" {{ isset($suraDetatil) && $suraDetatil->surah_id == $sura->id ? 'selected' : '' }}>
-                                    {{ $sura->name }}
+                                <option value="{{ $sura->id }}" {{ isset($verseDetatil) && $verseDetatil->surah_id == $sura->id ? 'selected' : '' }}>
+                                    {{ $sura->name_english }} ({{ $sura->name_arabic }}) {{ $sura->name_transliteration}}
                                 </option>
                             @endforeach
                         </select>
@@ -101,7 +101,7 @@
                         <select class="form-control" name="theme_id">
                             <option value="">Please Select Theme...!</option>
                             @foreach($themes as $theme)
-                                <option value="{{ $theme->id }}" {{ isset($suraDetatil) && $suraDetatil->theme_id == $theme->id ? 'selected' : '' }}>
+                                <option value="{{ $theme->id }}" {{ isset($verseDetatil) && $verseDetatil->theme_id == $theme->id ? 'selected' : '' }}>
                                     {{ ucwords(strtolower($theme->name)) }}
                                 </option>
                             @endforeach
@@ -119,9 +119,9 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             CKEDITOR.config.versionCheck = false;
-            
+
             // Initialize existing textareas
-            @foreach ($suraDetatil->summary ?? [] as $index => $fact)
+            @foreach ($verseDetatil->summary ?? [] as $index => $fact)
                 if (document.getElementById('summary_{{ $index }}')) {
                     CKEDITOR.replace('summary_{{ $index }}');
                 }

@@ -12,7 +12,7 @@ class SurahDetailSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        DB::table('surah_details')->insert([
+        DB::table('verse_details')->insert([
             [
                 'id' => 1,
                 'surah_id' => 1,
