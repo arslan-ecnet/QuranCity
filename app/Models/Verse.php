@@ -14,7 +14,7 @@ class Verse extends Model
 
     public function surah()
     {
-        return $this->belongsTo(QuranSurah::class, 'surah_id', 'id');
+        return $this->belongsTo(SuraModel::class, 'surah_id', 'id');
     }
 
     public function translations()

@@ -6,7 +6,7 @@
     <div class="dash-content">
         <div class="content-table">
             <div class="mb-4"><h5>Surah Details</h5></div>
-            <a href="{{route('surahDetailCreate')}}" class="btn btn-info text-white mb-3"
+            <a href="{{route('verseDetailCreate')}}" class="btn btn-info text-white mb-3"
                style="background-color: #CAAE78;border-color: #CAAE78">Create</a>
             <div class="table-responsive" style="max-height: 500px; overflow-x: auto;">
                 <table class="table table-striped table-hover align-middle" id="dataTable" style="min-width: 1000px;">
@@ -23,29 +23,29 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($suraDetails as $suraDetail)
+                    @foreach($verseDetails as $verseDetail)
                         <tr>
-                            <td>{{$suraDetail->id}}</td>
-                            <td>{{$suraDetail->title}}</td>
+                            <td>{{$verseDetail->id}}</td>
+                            <td>{{$verseDetail->title}}</td>
                             <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-                                title="@foreach (json_decode($suraDetail->summary ?? '[]') as $item) {{ $item }} | @endforeach">
+                                title="@foreach (json_decode($verseDetail->summary ?? '[]') as $item) {{ $item }} | @endforeach">
                                 {{
                                     Str::limit(
-                                        collect(json_decode($suraDetail->summary ?? '[]'))->implode(' | '),
+                                        collect(json_decode($verseDetail->summary ?? '[]'))->implode(' | '),
                                         50
                                     )
                                 }}
                             </td>
 
-                            <td>{{$suraDetail->sura->name}}</td>
-                            <td>{{$suraDetail->theme->name}}</td>
-                            <td>{{$suraDetail->from}}</td>
-                            <td>{{$suraDetail->to}}</td>
+                            <td>{{$verseDetail->sura->name_english}} {{$verseDetail->sura->name_arabic}}</td>
+                            <td>{{$verseDetail->theme->name}}</td>
+                            <td>{{$verseDetail->from}}</td>
+                            <td>{{$verseDetail->to}}</td>
                             <td>
-                                <a href="{{route('surahDetailEdit' , ['id' => $suraDetail->id])}}"
+                                <a href="{{route('verseDetailEdit' , ['id' => $verseDetail->id])}}"
                                    class="btn btn-info text-white"
                                    style="background-color: #CAAE78;border-color: #CAAE78">Edit</a><hr>
-                                <a href="{{route('surahDetailDelete' , ['id' => $suraDetail->id])}}"
+                                <a href="{{route('verseDetailDelete' , ['id' => $verseDetail->id])}}"
                                    class="btn btn-info text-white"
                                    style="background-color: #561B06;border-color: #561B06">Delete</a>
                             </td>

@@ -50,7 +50,7 @@
                 </div>
             @endif
         </div>
-        <form action="{{route('surahDetailCreate')}}" method="POST" enctype="multipart/form-data" onsubmit="removeEmptySummaries()">
+        <form action="{{route('verseDetailCreate')}}" method="POST" enctype="multipart/form-data" onsubmit="removeEmptySummaries()">
             @csrf
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
@@ -73,11 +73,11 @@
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
                         <label>From</label>
-                        <input type="text" class="form-control" name="from">
+                        <input type="number" class="form-control" name="from">
                     </div>
                     <div class="col-lg-6">
                         <label>To</label>
-                        <input type="text" class="form-control" name="to">
+                        <input type="number" class="form-control" name="to">
                     </div>
 
                 </div>
@@ -87,7 +87,7 @@
                         <select class="form-control" name="surah_id">
                             <option value="">Please Select Sura...!</option>
                             @foreach($suras as $sura)
-                                <option value="{{$sura->id}}">{{$sura->name}}</option>
+                                <option value="{{$sura->id}}">{{$sura->name_english}} ({{$sura->name_arabic}}) {{$sura->name_transliteration}}</option>
                             @endforeach
                         </select>
                     </div>

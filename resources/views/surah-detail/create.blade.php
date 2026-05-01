@@ -1,10 +1,35 @@
 @extends('layouts.app')
 @section('title')
-    <title>Edit Surah</title>
+    <title>Create Surah</title>
 @endsection
 @section('content')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
+        .color-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ddd;
+            transition: border-color 0.3s ease;
+        }
+
+        .color-input-wrapper:hover {
+            border-color: #777;
+        }
+
+        .color-input-wrapper input[type="color"] {
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            background: none;
+        }
+
         /* Select2 Bootstrap form-control styling */
         .select2-container .select2-selection--single {
             height: calc(1.5em + .75rem + 2px) !important;
@@ -29,6 +54,11 @@
         }
     </style>
     <div class="dash-content">
+
+        {{--        <div class="date-field  d-none d-xl-flex align-items-center mb-4 mb-md-5">--}}
+        {{--            <span>Show:</span>--}}
+        {{--            <input type="text" id="datepicker" placeholder="Today, 29 September 2023">--}}
+        {{--        </div>--}}
         <div class="mb-3">
             @if(session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
@@ -44,7 +74,7 @@
                 </div>
             @endif
         </div>
-        <form action="{{ route('surahUpdate',['id' => $surah->id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('surahDetailCreate')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
@@ -53,28 +83,23 @@
                         <select class="form-control" name="name" id="surah_name_select">
                             <option value="">-- Select Surah --</option>
                             @foreach($quranSurahs as $qSurah)
-                                <option value="{{ $qSurah->name_english ."-". $qSurah->name_transliteration}}" data-number="{{ $qSurah->id }}" data-verses="{{ $qSurah->total_verses }}" {{ (old('name', $surah->name) == $qSurah->name_english ."-". $qSurah->name_transliteration) ? 'selected' : '' }}>
-                                    {{ $qSurah->name_english }} ({{ $qSurah->name_arabic }}) {{$qSurah->name_transliteration}}
-                                </option>
+                                <option value="{{ $qSurah->name_english ."-". $qSurah->name_transliteration }}" data-number="{{ $qSurah->id }}" data-verses="{{ $qSurah->total_verses }}">{{ $qSurah->name_english }} ({{ $qSurah->name_arabic }}) {{$qSurah->name_transliteration}}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-lg-6">
                         <label>Surah Icon</label>
                         <input type="file" class="form-control" name="surah_icon">
-                        @if($surah->surah_icon)
-                            <img src="{{ asset('storage/' . $surah->surah_icon) }}" alt="Surah Icon" width="50" class="mt-2">
-                        @endif
                     </div>
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
                         <label>Surah Number</label>
-                        <input type="number" class="form-control" name="surah_number" value="{{ old('surah_number', $surah->surah_number) }}">
+                        <input type="number" class="form-control" name="surah_number">
                     </div>
                     <div class="col-lg-6">
                         <label>Total Verses</label>
-                        <input type="number" class="form-control" name="total_verses" value="{{ old('total_verses', $surah->total_verses) }}">
+                        <input type="number" class="form-control" name="total_verses">
                     </div>
                 </div>
                 <div class="row top-content mt-4">
@@ -82,96 +107,87 @@
                         <label>Classification</label>
                         <select class="form-control" id="classification" name="classification">
                             <option value="">-- Select Classification --</option>
-                            <option value="meccan" {{ $surah->classification == 'meccan' ? 'selected' : '' }}>Meccan</option>
-                            <option value="medinan" {{ $surah->classification == 'medinan' ? 'selected' : '' }}>Medinan</option>
+                            <option value="meccan">Meccan</option>
+                            <option value="medinan">Medinan</option>
                         </select>
                     </div>
                     <div class="col-lg-6">
                         <label>Sub Classification</label>
                         <select class="form-control" id="sub_classification" name="sub_classification">
                             <option value="">-- Select Sub Classification --</option>
-                            <option value="early makki" {{ $surah->sub_classification == 'early makki' ? 'selected' : '' }}>Early Makki</option>
-                            <option value="middle makki" {{ $surah->sub_classification == 'middle makki' ? 'selected' : '' }}>Middle Makki</option>
-                            <option value="late makki" {{ $surah->sub_classification == 'late makki' ? 'selected' : '' }}>Late Makki</option>
-                            <option value="madani" {{ $surah->sub_classification == 'madani' ? 'selected' : '' }}>Madani</option>
                         </select>
                     </div>
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
                         <label>Description</label>
-                        <textarea id="description_editor" class="form-control ckeditor" name="description" rows="4">{{ old('description', $surah->description) }}</textarea>
+                        <textarea id="description_editor" class="form-control ckeditor" name="description" rows="4"></textarea>
                     </div>
                     <div class="col-lg-6">
                         <label>Summary</label>
-                        <textarea id="summary_editor" class="form-control ckeditor" name="summary" rows="4">{{ old('summary', $surah->summary) }}</textarea>
+                        <textarea id="summary_editor" class="form-control ckeditor" name="summary" rows="4"></textarea>
                     </div>
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
-                        <label>Did You Know</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3" onclick="addDidYouKnow()">+ Add</a>
+                        <label>Did You Know</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3"
+                                                                     onclick="addDidYouKnow()">+ Add</a>
                         <div id="did-you-know-group">
-                            @foreach ($surah->did_you_know ?? [] as $fact)
-                                <div class="row mb-2 did-you-know-item">
-                                    <div class="col">
-                                        <textarea name="did_you_know[]" class="form-control" rows="3">{{ $fact }}</textarea>
-                                    </div>
+                            <div class="row mb-2 did-you-know-item">
+                                <div class="col">
+                                    <textarea class="form-control" name="did_you_know[]" rows="3"></textarea>
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <label>Focus</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3" onclick="addFocus()">+ Add</a>
                         <div id="focus-group">
-                            @foreach ($surah->focus ?? [] as $item)
-                                <div class="row mb-2 focus-item">
-                                    <div class="col input-group">
-                                        <input type="text" name="focus[]" class="form-control" value="{{ $item }}">
-                                        <div class="input-group-append">
-                                            <button type="button" class="btn btn-outline-secondary" onclick="formatTextCase(this)">Format Text</button>
-                                        </div>
+                            <div class="row mb-2 focus-item">
+                                <div class="col input-group">
+                                    <input type="text" class="form-control" name="focus[]">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="formatTextCase(this)">Format Text</button>
                                     </div>
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row top-content mt-4">
                     <div class="col-lg-6">
-                        <label>Benefits Of Recitation</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3" onclick="addBenefit()">+ Add</a>
+                        <label>Benefits Of Recitation</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3"
+                                                                               onclick="addBenefit()">+ Add</a>
                         <div id="benefit-group">
-                            @foreach ($surah->benefits_of_recitation ?? [] as $benefit)
-                                <div class="row mb-2 benefit-item">
-                                    <div class="col">
-                                        <input type="text" name="benefits_of_recitation[]" class="form-control" value="{{ $benefit }}">
-                                    </div>
+                            <div class="row mb-2 benefit-item">
+                                <div class="col">
+                                    <input class="form-control" name="benefits_of_recitation[]">
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-12 mt-4">
-                        <label>Selected Ayat</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3" onclick="addAyat()">+ Add Ayat</a>
+                        <label>Selected Ayat</label>&nbsp&nbsp&nbsp<a type="button" class="mb-3" onclick="addAyat()">+
+                            Add Ayat</a>
                         <div id="ayat-group">
-                            @foreach ($surah->selected_ayat as $ayat)
-                                <div class="row mb-2 ayat-item">
-                                    <div class="col">
-                                        <input type="text" name="ayat_title[]" class="form-control" value="{{ $ayat['ayat'] ?? '' }}" placeholder="Ayat (e.g. 1 or 2-4)">
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" name="ayat_summary[]" class="form-control" value="{{ $ayat['summary'] ?? '' }}" placeholder="Summary">
-                                    </div>
+                            <div class="row mb-2 ayat-item">
+                                <div class="col">
+                                    <input type="text" name="ayat_title[]" class="form-control"
+                                           placeholder="Ayat (e.g. 1 or 2-4)">
                                 </div>
-                            @endforeach
-
+                                <div class="col">
+                                    <input type="text" name="ayat_summary[]" class="form-control" placeholder="Summary">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-success mt-3" type="submit">Update</button>
+                <button class="btn btn-success mt-3" type="submit">Submit</button>
             </div>
         </form>
+
     </div>
 @endsection
-
 @section("scripts")
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script>
@@ -196,6 +212,7 @@
             const subClassification = document.getElementById("sub_classification");
             const value = this.value;
 
+            // Clear previous options
             subClassification.innerHTML = '<option value="">-- Select Sub Classification --</option>';
 
             if (value === "meccan") {
@@ -234,7 +251,8 @@
                 placeholder: "-- Select Surah --",
                 allowClear: true
             });
-
+            // When using Select2, the native onchange might not trigger the same way if attached via addEventListener
+            // So we trigger the change event explicitly or listen to select2:select
             $('#surah_name_select').on('select2:select', function (e) {
                 const selectedOption = e.params.data.element;
                 const surahNumber = selectedOption.getAttribute('data-number');
@@ -266,13 +284,13 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'mb-2', 'ayat-item');
             newRow.innerHTML = `
-                <div class="col">
-                    <input type="text" name="ayat_title[]" class="form-control" placeholder="Ayat (e.g. 1 or 2-4)">
-                </div>
-                <div class="col">
-                    <input type="text" name="ayat_summary[]" class="form-control" placeholder="Summary">
-                </div>
-            `;
+                                <div class="col">
+                                    <input type="text" name="ayat_title[]" class="form-control" placeholder="Ayat (e.g. 1 or 2-4)">
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="ayat_summary[]" class="form-control" placeholder="Summary">
+                                </div>
+                            `;
             group.appendChild(newRow);
         }
 
@@ -281,10 +299,10 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'mb-2', 'did-you-know-item');
             newRow.innerHTML = `
-                <div class="col">
-                    <textarea name="did_you_know[]" class="form-control" rows="3"></textarea>
-                </div>
-            `;
+                                <div class="col">
+                                    <textarea name="did_you_know[]" class="form-control" rows="3"></textarea>
+                                </div>
+                            `;
             group.appendChild(newRow);
         }
 
@@ -293,13 +311,13 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'mb-2', 'focus-item');
             newRow.innerHTML = `
-                <div class="col input-group">
-                    <input type="text" name="focus[]" class="form-control">
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-secondary" onclick="formatTextCase(this)">Format Text</button>
-                    </div>
-                </div>
-            `;
+                                <div class="col input-group">
+                                    <input type="text" name="focus[]" class="form-control">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="formatTextCase(this)">Format Text</button>
+                                    </div>
+                                </div>
+                            `;
             group.appendChild(newRow);
         }
 
@@ -308,10 +326,10 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'mb-2', 'benefit-item');
             newRow.innerHTML = `
-                <div class="col">
-                    <input type="text" name="benefits_of_recitation[]" class="form-control">
-                </div>
-            `;
+                                <div class="col">
+                                    <input type="text" name="benefits_of_recitation[]" class="form-control">
+                                </div>
+                            `;
             group.appendChild(newRow);
         }
     </script>

@@ -3,140 +3,124 @@
 namespace App\Http\Controllers;
 
 use App\Models\QuranSurah;
-use App\Models\ResourcesModel;
-use App\Models\SuburbModel;
-use App\Models\SuraDetailModel;
 use App\Models\SuraModel;
-use App\Models\Theme;
 use Illuminate\Http\Request;
 
 class SuraController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $suras = SuraModel::all();
-        return view('sura.list' , ['suras' => $suras]);
+        if ($request->ajax()) {
+            $query = SuraModel::query();
+
+            // Search
+            if ($request->has('search') && !empty($request->search['value'])) {
+                $searchValue = $request->search['value'];
+                $query->where(function($q) use ($searchValue) {
+                    $q->where('name_english', 'like', "%{$searchValue}%")
+                      ->orWhere('name_arabic', 'like', "%{$searchValue}%")
+                      ->orWhere('name_transliteration', 'like', "%{$searchValue}%");
+                });
+            }
+
+            // Total records
+            $totalRecords = SuraModel::count();
+
+            // Filtered records
+            $totalFiltered = $query->count();
+
+            // Order
+            if ($request->has('order')) {
+                $orderColumnIndex = $request->order[0]['column'];
+                $orderDir = $request->order[0]['dir'];
+                $columns = ['id', 'name_english', 'name_arabic', 'name_transliteration', 'revelation_type', 'revelation_order', 'total_verses', 'rukus', 'hizb_number', 'juz_start', 'juz_end'];
+
+                if (isset($columns[$orderColumnIndex])) {
+                    $query->orderBy($columns[$orderColumnIndex], $orderDir);
+                }
+            }
+
+            // Pagination
+            if ($request->has('start') && $request->has('length') && $request->length != -1) {
+                $query->skip($request->start)->take($request->length);
+            }
+
+            $surahs = $query->get();
+
+            $data = [];
+            foreach ($surahs as $surah) {
+                $editUrl = route('surahEdit', ['id' => $surah->id]);
+                $deleteUrl = route('surahDelete', ['id' => $surah->id]);
+
+                $data[] = [
+                    $surah->id,
+                    $surah->name_english,
+                    $surah->name_arabic,
+                    $surah->name_transliteration,
+                    ucfirst($surah->revelation_type),
+                    $surah->revelation_order,
+                    $surah->total_verses,
+                    $surah->rukus,
+                    $surah->hizb_number,
+                    $surah->juz_start,
+                    $surah->juz_end,
+                    '<a href="'.$editUrl.'" class="btn btn-sm btn-info text-white mb-1" style="background-color: #CAAE78;border-color: #CAAE78">Edit</a><br>' .
+                    '<a href="'.$deleteUrl.'" class="btn btn-sm btn-info text-white" style="background-color: #561B06;border-color: #561B06" onclick="return confirm(\'Are you sure you want to delete this surah?\');">Delete</a>'
+                ];
+            }
+
+            return response()->json([
+                "draw" => intval($request->draw),
+                "recordsTotal" => $totalRecords,
+                "recordsFiltered" => $totalFiltered,
+                "data" => $data
+            ]);
+        }
+
+        return view('surah.list');
     }
+
     public function create()
     {
-        $quranSurahs = QuranSurah::all();
-        return view('sura.create', compact('quranSurahs'));
+        return view('surah.create');
     }
+
     public function save(Request $request)
     {
-        $ayatTitles = $request->input('ayat_title', []);
-        $ayatSummaries = $request->input('ayat_summary', []);
-
-        $selectedAyat = [];
-
-        foreach ($ayatTitles as $index => $title) {
-            if (!empty($title) && !empty($ayatSummaries[$index])) {
-                $selectedAyat[] = [
-                    'ayat' => $title,
-                    'summary' => $ayatSummaries[$index],
-                ];
-            }
-        }
         $request->validate([
-           'name' => 'required',
-           'surah_number' => 'required',
-           'total_verses' => 'required',
-           'classification' => 'required',
-           'sub_classification' => 'required',
-           'description' => 'required',
-           'summary' => 'required',
-           'focus' => 'required',
-           'did_you_know' => 'required',
-           'benefits_of_recitation' => 'required',
-//           'selected_ayat' => 'required',
-            'surah_icon' => 'required',
+            'name_english' => 'required',
+            'name_arabic' => 'required',
         ]);
-        $sura = new SuraModel();
-        $sura->name = $request->name;
-        $sura->surah_number = $request->surah_number;
-        $sura->total_verses = $request->total_verses;
-        $sura->classification = $request->classification;
-        $sura->sub_classification = $request->sub_classification;
-        $sura->description = $request->description;
-        $sura->summary = $request->summary;
-        $sura->focus = json_encode($request->input('focus', []));
-        $sura->did_you_know = json_encode($request->input('did_you_know', []));
-        $sura->benefits_of_recitation = json_encode($request->input('benefits_of_recitation', []));
-        $sura->selected_ayat = json_encode($selectedAyat);
-        if ($request->hasFile('surah_icon')) {
-            $sura->surah_icon = $this->uploadImage($request->file('surah_icon'));
-        }
-        $sura->save();
-        return redirect(route('surahList'));
+
+        SuraModel::create($request->except('_token'));
+
+        return redirect()->route('surahList')->with('success', 'Surah created successfully.');
     }
+
     public function edit($id)
     {
-        $surah = SuraModel::find($id);
-        $surah->focus = json_decode($surah->focus, true);
-        $surah->did_you_know = json_decode($surah->did_you_know, true);
-        $surah->benefits_of_recitation = json_decode($surah->benefits_of_recitation, true);
-        $surah->selected_ayat = json_decode($surah->selected_ayat, true) ?? [];
-        $quranSurahs = \App\Models\QuranSurah::all();
-        return view('sura.edit' , ['surah' => $surah, 'quranSurahs' => $quranSurahs]);
+        $surah = SuraModel::findOrFail($id);
+        return view('surah.edit', compact('surah'));
     }
-    public function update(Request $request , $id)
+
+    public function update(Request $request, $id)
     {
-        $ayatTitles = $request->input('ayat_title', []);
-        $ayatSummaries = $request->input('ayat_summary', []);
-
-        $selectedAyat = [];
-
-        foreach ($ayatTitles as $index => $title) {
-            if (!empty($title) && !empty($ayatSummaries[$index])) {
-                $selectedAyat[] = [
-                    'ayat' => $title,
-                    'summary' => $ayatSummaries[$index],
-                ];
-            }
-        }
         $request->validate([
-            'name' => 'required',
-            'surah_number' => 'required',
-            'total_verses' => 'required',
-            'classification' => 'required',
-            'sub_classification' => 'required',
-            'description' => 'required',
-            'summary' => 'required',
-            'focus' => 'required',
-            'did_you_know' => 'required',
-            'benefits_of_recitation' => 'required',
+            'name_english' => 'required',
+            'name_arabic' => 'required',
         ]);
-        $sura = SuraModel::find($id);
-        $sura->name = $request->name;
-        $sura->surah_number = $request->surah_number;
-        $sura->total_verses = $request->total_verses;
-        $sura->classification = $request->classification;
-        $sura->sub_classification = $request->sub_classification;
-        $sura->description = $request->description;
-        $sura->summary = $request->summary;
-        $sura->focus = json_encode($request->input('focus', []));
-        $sura->did_you_know = json_encode($request->input('did_you_know', []));
-        $sura->benefits_of_recitation = json_encode($request->input('benefits_of_recitation', []));
-        $sura->selected_ayat = json_encode($selectedAyat);
-        if ($request->hasFile('surah_icon')) {
-            $sura->surah_icon = $this->uploadImage($request->file('surah_icon'));
-        }
-        $sura->save();
-        return redirect(route('surahList'));
+
+        $surah = SuraModel::findOrFail($id);
+        $surah->update($request->except('_token'));
+
+        return redirect()->route('surahList')->with('success', 'Surah updated successfully.');
     }
+
     public function delete($id)
     {
-        $sura = SuraModel::find($id);
-        $sura->delete();
-        return redirect(route('surahList'));
-    }
-    private function uploadImage($image)
-    {
-        if ($image) {
-            $path = $image->store('surah_icon', 'public');
-            return 'surah_icon/' . basename($path);
-        }
-        return null;
-    }
+        $surah = SuraModel::findOrFail($id);
+        $surah->delete();
 
+        return redirect()->route('surahList')->with('success', 'Surah deleted successfully.');
+    }
 }

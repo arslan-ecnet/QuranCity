@@ -17,17 +17,27 @@
             <ul id="side-menu" class="menu-body">
 
                 <li>
-                    <a href="{{route('surahList')}}" class="{{ Request::is('sura*') ? 'active' : '' }}">
+                    <a href="{{route('surahList')}}" class="{{ request()->routeIs('surahList', 'surahCreate', 'surahEdit') ? 'active' : '' }}">
                         <span class="icon"><img src="{{ asset('images/icon-2.png') }}" alt=""></span>Surahs
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('surahDetailList')}}" class="{{ Request::is('details*') ? 'active' : '' }}">
+                    <a href="{{route('surahDetailList')}}" class="{{ request()->routeIs('surahDetailList', 'surahDetailCreate', 'surahDetailEdit') ? 'active' : '' }}">
                         <span class="icon"><img src="{{ asset('images/icon-2.png') }}" alt=""></span>Surah Details
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('themeList') }}" class="{{ Request::is('themes*') ? 'active' : '' }}">
+                    <a href="{{route('verseList')}}" class="{{ request()->routeIs('verseList', 'verseCreate', 'verseEdit') ? 'active' : '' }}">
+                        <span class="icon"><img src="{{ asset('images/icon-2.png') }}" alt=""></span>Verses
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('verseDetailList')}}" class="{{ request()->routeIs('verseDetailList', 'verseDetailCreate', 'verseDetailEdit') ? 'active' : '' }}">
+                        <span class="icon"><img src="{{ asset('images/icon-2.png') }}" alt=""></span> Verse Details
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('themeList') }}" class="{{ request()->routeIs('themeList', 'createTheme', 'editTheme') ? 'active' : '' }}">
                         <span class="icon"><img src="{{ asset('images/icon-1.png') }}" alt=""></span>Themes
                     </a>
                 </li>

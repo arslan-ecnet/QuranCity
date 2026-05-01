@@ -17,14 +17,14 @@ class QuranTablesSeeder extends Seeder
         // 1. Seed Quran Surahs using a reliable public API (AlQuran.cloud)
         // This will automatically fetch and insert all 114 Surahs with accurate basic details!
         $this->command->info('Fetching Surahs from AlQuran Cloud API...');
-        
+
         try {
             $response = Http::timeout(15)->get('https://api.alquran.cloud/v1/surah');
-            
+
             if ($response->successful()) {
                 $surahs = $response->json('data');
                 $insertData = [];
-                
+
                 foreach ($surahs as $surah) {
                     $insertData[] = [
                         'id' => $surah['number'],
@@ -42,11 +42,11 @@ class QuranTablesSeeder extends Seeder
                         'updated_at' => now(),
                     ];
                 }
-                
+
                 // Truncate first to prevent duplicate entries if run multiple times
                 Schema::disableForeignKeyConstraints();
-                DB::table('quran_surahs')->truncate();
-                DB::table('quran_surahs')->insert($insertData);
+                DB::table('surahs')->truncate();
+                DB::table('surahs')->insert($insertData);
                 Schema::enableForeignKeyConstraints();
                 $this->command->info('Successfully seeded 114 Surahs!');
             } else {
@@ -54,9 +54,9 @@ class QuranTablesSeeder extends Seeder
             }
         } catch (\Exception $e) {
             $this->command->error('Error fetching Surahs: ' . $e->getMessage());
-            
+
             // Fallback: Seed a few manual ones if the API fails
-            DB::table('quran_surahs')->insert([
+            DB::table('surahs')->insert([
                 [
                     'id' => 1, 'name_arabic' => 'الفاتحة', 'name_english' => 'The Opening', 'name_transliteration' => 'Al-Fatiha',
                     'revelation_type' => 'makki', 'total_verses' => 7, 'created_at' => now(), 'updated_at' => now()

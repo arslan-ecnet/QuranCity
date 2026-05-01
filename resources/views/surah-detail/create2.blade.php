@@ -172,8 +172,8 @@
                 </div>
                 <script>
                     function addSuraThemeRow() {
-                        let wrapper = document.getElementById('sura-theme-wrapper');
-                        let groups = document.querySelectorAll('.sura-theme-group');
+                        let wrapper = document.getElementById('surah-detail-theme-wrapper');
+                        let groups = document.querySelectorAll('.surah-detail-theme-group');
                         let lastGroup = groups[groups.length - 1];
                         let clone = lastGroup.cloneNode(true);
 
