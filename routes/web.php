@@ -7,6 +7,10 @@ use App\Http\Controllers\SuraDetailController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\VerseController;
 use App\Http\Controllers\VerseDetailController;
+use App\Http\Controllers\AudioFileController;
+use App\Http\Controllers\ReciterController;
+use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\VerseTranslationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +57,39 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/edit/{id}', [VerseDetailController::class, 'edit'])->name('Edit');
         Route::post('/edit/{id}', [VerseDetailController::class, 'update'])->name('Update');
         Route::get('/delete/{id}', [VerseDetailController::class, 'delete'])->name('Delete');
+    });
+    
+    Route::prefix('reciter')->name('reciter')->group(function () {
+        Route::get('/', [ReciterController::class, 'index'])->name('List');
+        Route::get('/create', [ReciterController::class, 'create'])->name('Create');
+        Route::post('/create', [ReciterController::class, 'save'])->name('Create');
+        Route::get('/edit/{id}', [ReciterController::class, 'edit'])->name('Edit');
+        Route::post('/edit/{id}', [ReciterController::class, 'update'])->name('Update');
+        Route::get('/delete/{id}', [ReciterController::class, 'delete'])->name('Delete');
+    });
+    Route::prefix('translation')->name('translation')->group(function () {
+        Route::get('/', [TranslationController::class, 'index'])->name('List');
+        Route::get('/create', [TranslationController::class, 'create'])->name('Create');
+        Route::post('/create', [TranslationController::class, 'save'])->name('Create');
+        Route::get('/edit/{id}', [TranslationController::class, 'edit'])->name('Edit');
+        Route::post('/edit/{id}', [TranslationController::class, 'update'])->name('Update');
+        Route::get('/delete/{id}', [TranslationController::class, 'delete'])->name('Delete');
+    });
+    Route::prefix('audio-file')->name('audioFile')->group(function () {
+        Route::get('/', [AudioFileController::class, 'index'])->name('List');
+        Route::get('/create', [AudioFileController::class, 'create'])->name('Create');
+        Route::post('/create', [AudioFileController::class, 'save'])->name('Create');
+        Route::get('/edit/{id}', [AudioFileController::class, 'edit'])->name('Edit');
+        Route::post('/edit/{id}', [AudioFileController::class, 'update'])->name('Update');
+        Route::get('/delete/{id}', [AudioFileController::class, 'delete'])->name('Delete');
+    });
+    Route::prefix('verse-translation')->name('verseTranslation')->group(function () {
+        Route::get('/', [VerseTranslationController::class, 'index'])->name('List');
+        Route::get('/create', [VerseTranslationController::class, 'create'])->name('Create');
+        Route::post('/create', [VerseTranslationController::class, 'save'])->name('Create');
+        Route::get('/edit/{id}', [VerseTranslationController::class, 'edit'])->name('Edit');
+        Route::post('/edit/{id}', [VerseTranslationController::class, 'update'])->name('Update');
+        Route::get('/delete/{id}', [VerseTranslationController::class, 'delete'])->name('Delete');
     });
 
 });
