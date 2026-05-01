@@ -27,6 +27,16 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('verseList')}}" class="{{ Request::is('vers*') ? 'active' : '' }}">
+                        <span class="icon"><img src="{{ asset('images/icon-2.png') }}" alt=""></span>Verses
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('verseDetailList')}}" class="{{ Request::is('verse-details*') ? 'active' : '' }}">
+                        <span class="icon"><img src="{{ asset('images/icon-2.png') }}" alt=""></span> Verse Details
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('themeList') }}" class="{{ Request::is('themes*') ? 'active' : '' }}">
                         <span class="icon"><img src="{{ asset('images/icon-1.png') }}" alt=""></span>Themes
                     </a>
