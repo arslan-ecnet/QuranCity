@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Verse;
 use App\Models\VerseTranslation;
 use App\Models\Translation;
 use Illuminate\Http\Request;
@@ -78,7 +79,8 @@ class VerseTranslationController extends Controller
     public function create()
     {
         $translations = Translation::all();
-        return view('verse-translation.create', compact('translations'));
+        $verses = Verse::all();
+        return view('verse-translation.create', compact('translations' , 'verses'));
     }
 
     public function save(Request $request)
@@ -96,7 +98,8 @@ class VerseTranslationController extends Controller
     {
         $verseTranslation = VerseTranslation::findOrFail($id);
         $translations = Translation::all();
-        return view('verse-translation.edit', compact('verseTranslation', 'translations'));
+        $verses = Verse::all();
+        return view('verse-translation.edit', compact('verseTranslation', 'translations' , 'verses'));
     }
 
     public function update(Request $request, $id)

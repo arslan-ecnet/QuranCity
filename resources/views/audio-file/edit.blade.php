@@ -23,8 +23,13 @@
             <div class="content-wrap box-content box-shadow p-4 p-md-5">
                 <div class="row top-content">
                     <div class="col-lg-3">
-                        <label>Verse ID</label>
-                        <input type="number" class="form-control" name="verse_id" value="{{ $audioFile->verse_id }}" required>
+                        <label>Verse</label>
+                        <select class="form-control" name="verse_id" required>
+                            <option value="">-- Select Verse --</option>
+                            @foreach($verses as $verse)
+                                <option value="{{ $verse->id }}" {{ $audioFile->verse_id == $verse->id ? 'selected' : '' }}>{{ $verse->id }}  {{$verse->text_arabic}}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-lg-3">
                         <label>Reciter</label>

@@ -16,4 +16,8 @@ class AudioFile extends Model
     {
         return $this->belongsTo(Reciter::class, 'reciter_id', 'id');
     }
+    public function verse()
+    {
+        return $this->belongsTo(Verse::class, 'verse_id', 'id');
+    }
 }

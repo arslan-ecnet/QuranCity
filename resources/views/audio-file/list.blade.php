@@ -4,10 +4,10 @@
 @endsection
 @section('content')
     <style>
-        .dash-content { min-height: calc(100vh - 100px); }
-        .content-table { height: 100%; overflow: hidden; }
-        .table-responsive { max-height: 100vh; overflow-y: auto; }
-        #dataTable thead { position: sticky; top: 0; background-color: #fff; z-index: 10; }
+        /*.dash-content { min-height: calc(100vh - 100px); }*/
+        /*.content-table { height: 100%; overflow: hidden; }*/
+        /*.table-responsive { max-height: 100vh; overflow-y: auto; }*/
+        /*#dataTable thead { position: sticky; top: 0; background-color: #fff; z-index: 10; }*/
     </style>
     <div class="dash-content">
         @if(session('success'))
@@ -22,9 +22,9 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Verse ID</th>
+                        <th>Verse</th>
                         <th>Reciter</th>
-                        <th>URL</th>
+                        <th>Audio</th>
                         <th>Duration</th>
                         <th>Action</th>
                     </tr>
@@ -50,7 +50,7 @@
                         "url": "{{ route('audioFileList') }}",
                         "type": "GET"
                     },
-                    "pageLength": 50,
+                    "pageLength": 10,
                     "order": [[0, "asc"]],
                     "columnDefs": [
                         { "orderable": false, "targets": [5] }

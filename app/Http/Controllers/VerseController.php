@@ -128,4 +128,26 @@ class VerseController extends Controller
 
         return redirect()->route('verseList')->with('success', 'Verse deleted successfully.');
     }
+
+    public function search(Request $request)
+    {
+        $term = $request->input('q');
+        $query = Verse::query();
+        if ($term) {
+            $query->where('id', 'like', "%{$term}%")
+                  ->orWhere('text_arabic', 'like', "%{$term}%")
+                  ->orWhere('ayah_number', 'like', "%{$term}%");
+        }
+        $verses = $query->limit(50)->get();
+        
+        $results = [];
+        foreach ($verses as $verse) {
+            $results[] = [
+                'id' => $verse->id,
+                'text' => $verse->id . ' - ' . Str::limit(strip_tags($verse->text_arabic), 50)
+            ];
+        }
+        
+        return response()->json($results);
+    }
 }

@@ -44,6 +44,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     });
     Route::prefix('verse')->name('verse')->group(function () {
         Route::get('/', [VerseController::class, 'index'])->name('List');
+        Route::get('/search', [VerseController::class, 'search'])->name('Search');
         Route::get('/create', [VerseController::class, 'create'])->name('Create');
         Route::post('/create', [VerseController::class, 'save'])->name('Create');
         Route::get('/edit/{id}', [VerseController::class, 'edit'])->name('Edit');

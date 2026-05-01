@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AudioFile;
 use App\Models\Reciter;
+use App\Models\Verse;
 use Illuminate\Http\Request;
 
 class AudioFileController extends Controller
@@ -53,9 +54,9 @@ class AudioFileController extends Controller
 
                 $data[] = [
                     $audio->id,
-                    $audio->verse_id,
+                    $audio->verse->text_arabic,
                     $audio->reciter ? $audio->reciter->name : $audio->reciter_id,
-                    $audio->url,
+                    '<audio controls style="max-height: 40px; width: 250px;"><source src="'.$audio->url.'" type="audio/mpeg">Your browser does not support the audio element.</audio>',
                     $audio->duration,
                     '<a href="'.$editUrl.'" class="btn btn-sm btn-info text-white me-1" style="background-color: #CAAE78;border-color: #CAAE78">Edit</a>' .
                     '<a href="'.$deleteUrl.'" class="btn btn-sm btn-info text-white" style="background-color: #561B06;border-color: #561B06" onclick="return confirm(\'Are you sure you want to delete this audio file?\');">Delete</a>'
@@ -75,7 +76,8 @@ class AudioFileController extends Controller
     public function create()
     {
         $reciters = Reciter::all();
-        return view('audio-file.create', compact('reciters'));
+        $verses = Verse::all();
+        return view('audio-file.create', compact('reciters' , 'verses'));
     }
 
     public function save(Request $request)
@@ -93,7 +95,8 @@ class AudioFileController extends Controller
     {
         $audioFile = AudioFile::findOrFail($id);
         $reciters = Reciter::all();
-        return view('audio-file.edit', compact('audioFile', 'reciters'));
+        $verses = Verse::all();
+        return view('audio-file.edit', compact('audioFile', 'reciters' , 'verses'));
     }
 
     public function update(Request $request, $id)
